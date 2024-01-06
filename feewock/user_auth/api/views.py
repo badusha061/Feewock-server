@@ -2,6 +2,8 @@ from rest_framework import generics , status
 from rest_framework.response import Response
 from .serializer import UserSerialzer
 from rest_framework.views import APIView
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializer import CustomerTokenObtainPairSerialzer
 
 class Registrations(APIView):
     def post(self,request):
@@ -15,5 +17,5 @@ class Registrations(APIView):
             return Response(serializer_class.errors,status=status.HTTP_400_BAD_REQUEST)
 
 
-class TokenObtainPairView(APIView):
-    pass
+class CustomerTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomerTokenObtainPairSerialzer
