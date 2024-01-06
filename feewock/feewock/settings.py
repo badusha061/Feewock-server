@@ -1,6 +1,8 @@
 
 from pathlib import Path
 import os
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,7 +33,10 @@ INSTALLED_APPS = [
     #apps
     'rest_framework',
     'corsheaders',
-    'user_auth'
+    'user_auth',
+    'rest_framework.authtoken',
+    'oauth2_provider',
+    'rest_framework_simplejwt.token_blacklist',    
 ]
 
 MIDDLEWARE = [
@@ -40,6 +45,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -63,6 +69,22 @@ TEMPLATES = [
     },
 ]
 
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+
+
+
+SIMPLE_JWT = {
+     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+     'ROTATE_REFRESH_TOKENS': True,
+     'BLACKLIST_AFTER_ROTATION': True
+}
 
 
 WSGI_APPLICATION = 'feewock.wsgi.application'
@@ -128,3 +150,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ORIGIN_ALLOW_ALL = True
 
 AUTH_USER_MODEL = 'user_auth.Customer'
+
+CORS_ALLOWED_ORIGINS = [
+  "http://localhost:5173", 
+]

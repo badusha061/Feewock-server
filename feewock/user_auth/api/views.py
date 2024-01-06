@@ -13,3 +13,7 @@ class Registrations(APIView):
         else:
             print(serializer_class.errors,'the error message is the ')
             return Response(serializer_class.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+class TokenObtainPairView(APIView):
+    pass
