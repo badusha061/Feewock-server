@@ -1,6 +1,10 @@
 from rest_framework.serializers import ModelSerializer
 from user_auth.models import Customer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+import random
+from datetime import datetime , timedelta
+from django.conf import settings
+
 
 
 class UserSerialzer(ModelSerializer):
@@ -11,11 +15,11 @@ class UserSerialzer(ModelSerializer):
             'password':{'write_only':True},
         }
     def create(self,validated_data):
+        otp = random.randint(1000,9999)
         user = Customer.objects.create_user(**validated_data)
         return user
 
 
-    
 class CustomerTokenObtainPairSerialzer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)

@@ -4,6 +4,12 @@ from .serializer import UserSerialzer
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializer import CustomerTokenObtainPairSerialzer
+import random 
+import datetime 
+from django.conf import settings
+from django.utils import timezone
+from rest_framework.decorators import action
+
 
 class Registrations(APIView):
     def post(self,request):
