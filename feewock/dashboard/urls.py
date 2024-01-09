@@ -1,8 +1,7 @@
 from django.urls import path 
-from .views import *
 
 urlpatterns = [    
-    path('userlist',UserListView.as_view() , name='userlist'),
-    path('userlist/<int:pk>/block',UserBlockUnblock.as_view({'put':'block'}) , name='userblock'),
-    path('userlist/<int:pk>/unblock',UserBlockUnblock.as_view({'put':'unblock'}) , name='userunblock'),
+    # path('userlist',UserListView.as_view() , name='userlist'),
+    # path('userlist/<int:pk>/block',UserBlockUnblock.as_view({'put':'block'}) , name='userblock'),
+    # path('userlist/<int:pk>/unblock',UserBlockUnblock.as_view({'put':'unblock'}) , name='userunblock'),
 ]

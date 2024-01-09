@@ -1,22 +1,69 @@
 from rest_framework.serializers import ModelSerializer
-from user_auth.models import Customer
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 import random
 from datetime import datetime , timedelta
 from django.conf import settings
+from user_auth.models import UserModel
+from rest_framework import serializers
+from user_auth.utils import send_otp
+from user_auth.models import UserModel
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-
-
-class UserSerialzer(ModelSerializer):
-    class Meta:
-        model = Customer
-        fields = ['id','first_name','last_name','username','email','number','location','password','is_active']
-        extra_kwargs = {
-            'password':{'write_only':True},
+class UserSerializer(serializers.ModelSerializer):
+    password1 = serializers.CharField(
+        write_only = True,
+        min_length = settings.MIN_PASSWORD_LENGTH,
+        error_messages = {
+            "min_length":"password must be longer than {} characters".format(
+                settings.MIN_PASSWORD_LENGTH
+            )
         }
-    def create(self,validated_data):
+    )
+
+    password2 = serializers.CharField(
+        write_only = True,
+        min_length = settings.MIN_PASSWORD_LENGTH,
+        error_messages = {
+            "min_length":"password must be longer than {} characters".format(
+                settings.MIN_PASSWORD_LENGTH
+            )
+        }
+    )
+
+    class Meta:
+        model = UserModel
+        fields = (
+            "id",
+            "first_name",
+            "last_name",
+            "email",
+            "location",
+            "phone_number",
+            "password1",
+            "password2"
+        )
+        read_only_fields = ("id",)
+
+    def validate(self , data):
+        if data["password1"] != data["password2"]:
+            raise serializers.ValidationError("passsword do not match")
+        return data
+    
+    def create(self , validated_data):
         otp = random.randint(1000,9999)
-        user = Customer.objects.create_user(**validated_data)
+        otp_expiry = datetime.now() + timedelta(minutes=10)
+        user = UserModel(
+            first_name = validated_data["first_name"],
+            last_name = validated_data["last_name"],
+            location = validated_data["location"],
+            phone_number = validated_data["phone_number"],
+            email = validated_data["email"],
+            otp = otp,
+            otp_expiry = otp_expiry,
+            max_otp_try = settings.MAX_OTP_TRY
+        )
+        user.set_password(validated_data["password1"])
+        user.save()
+        send_otp(validated_data["phone_number"],otp)
         return user
 
 
@@ -33,9 +80,8 @@ class CustomerTokenObtainPairSerialzer(TokenObtainPairSerializer):
             data['id'] = user.id
             data['first_name'] = user.first_name
             data['last_name'] = user.last_name
-            data['username'] = user.username
             data['email'] = user.email  
-            data['number'] = user.number
+            data['number'] = user.phone_number
             data['location'] = user.location
             data['is_active'] = user.is_active
         return data

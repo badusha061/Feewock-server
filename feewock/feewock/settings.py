@@ -2,10 +2,20 @@
 from pathlib import Path
 import os
 from datetime import timedelta
+import environ
+
+env = environ.Env()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+environ.Env.read_env(BASE_DIR/ '.env')
+
+SMS_API_KEY = env("SMS_API_KEY")
+
+
+APPEND_SLASH = False
 
 
 # Quick-start development settings - unsuitable for production
@@ -35,12 +45,13 @@ INSTALLED_APPS = [
     'corsheaders',
     'user_auth',
     'rest_framework.authtoken',
-    'oauth2_provider',
-    'rest_framework_simplejwt.token_blacklist',    
+    'rest_framework_simplejwt',
     
 ]
 
 MAX_OTP_TRY = 3
+AUTH_USER_MODEL  = "user_auth.UserModel"
+MIN_PASSWORD_LENGTH = 8
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -99,7 +110,7 @@ WSGI_APPLICATION = 'feewock.wsgi.application'
 DATABASES = {
    "default": {
        "ENGINE": "django.db.backends.postgresql",
-       "NAME": "feewock",
+       "NAME": "feewock1",
        "USER": "postgres",
        "PASSWORD": "123",
        "HOST": "127.0.0.1",
@@ -152,7 +163,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
 
-AUTH_USER_MODEL = 'user_auth.Customer'
 
 CORS_ALLOWED_ORIGINS = [
   "http://localhost:5173", 
