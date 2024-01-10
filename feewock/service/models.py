@@ -1,0 +1,23 @@
+from django.db import models
+
+# Create your models here.
+
+
+class MainService(models.Model):
+    name = models.CharField(max_length = 50,null = True , blank = True , unique = True)
+    is_active = models.BooleanField(default = True)
+
+    def delete(self , using = None , keep_parents = False):
+        self.is_active = False
+        self.save()
+
+    
+    
+class SubService(models.Model):
+    name = models.CharField(max_length = 50 , blank = True , null = True)
+    Image = models.ImageField(upload_to='Image',blank=True,null=True)
+    mainservice = models.ForeignKey(MainService, on_delete=models.CASCADE,null = True)
+    is_active = models.BooleanField(default = False)
+
+    def __str__(self) -> str:
+        return self.name

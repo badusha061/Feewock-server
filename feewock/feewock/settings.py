@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'user_auth',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
+    'employee_auth',
+    'service',
     
 ]
 

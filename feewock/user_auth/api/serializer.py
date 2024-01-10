@@ -38,10 +38,11 @@ class UserSerializer(serializers.ModelSerializer):
             "email",
             "location",
             "phone_number",
+            "is_active",
             "password1",
             "password2"
         )
-        read_only_fields = ("id",)
+        read_only_fields = ["id"]
 
     def validate(self , data):
         if data["password1"] != data["password2"]:
