@@ -24,8 +24,11 @@ class BankDetails(models.Model):
     
 
 class EmployeePostion(models.Model):
-    postion_name = models.CharField(max_length = 50,null = True, blank = True)
-    postion_titile = models.TextField(max_length=255 , null = True , blank = True)
+    name = models.CharField(max_length = 50,null = True, blank = True,unique = True)
+    is_active = models.BooleanField(default = True)
+
+    # def __str__(self) -> str:
+    #     return self.postion_name
 
 class Employees(models.Model):
     username = models.CharField(max_length = 50)
