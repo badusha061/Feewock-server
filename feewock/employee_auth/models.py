@@ -1,4 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import AbstractBaseUser , PermissionsMixin ,Permission 
+from django.contrib.auth.models import Group
+from user_auth.models import UserManager
+from django.core.validators import RegexValidator , validate_email
+from django.conf import settings
+
+phone_regex = RegexValidator(
+    regex=r"^\d{10}", message="Phone number must be 10 digits only."
+)
 
 # Create your models here.
 
@@ -30,11 +39,13 @@ class EmployeePostion(models.Model):
     # def __str__(self) -> str:
     #     return self.postion_name
 
-class Employees(models.Model):
+
+
+class Employees(AbstractBaseUser , PermissionsMixin):
     username = models.CharField(max_length = 50)
-    email = models.EmailField(max_length=254, unique =  True)
+    email = models.EmailField(max_length=254, unique =  True , validators =[validate_email])
     gender = models.CharField(max_length=1 , choices = GENDER_CHOICES)
-    phone_number = models.BigIntegerField(unique =  True)
+    phone_number = models.BigIntegerField(unique =  True , validators =[phone_regex] )
     dob = models.DateField(verbose_name = "Date of birth")
     address = models.TextField(max_length=250)
     city = models.CharField(max_length = 50)
@@ -45,11 +56,29 @@ class Employees(models.Model):
         default = 'FT'
     )
     adhar_number = models.BigIntegerField(unique=True)
-    images = models.ImageField(upload_to='Image')
+    images = models.ImageField(upload_to='Image',blank=True)
     bank_details = models.ForeignKey(BankDetails,on_delete=models.CASCADE, null = True)
     is_active = models.BooleanField(default= False)
-    position = models.ForeignKey(EmployeePostion, on_delete=models.CASCADE , null = True)
-    password = models.CharField(max_length = 50)
-    
+    position = models.ManyToManyField(EmployeePostion)
+    location = models.CharField(max_length=50,null=True)
+    otp = models.CharField(max_length = 4,null=True)
+    otp_expiry = models.DateTimeField(blank = True,null = True)
+    max_otp_try = models.CharField(default = settings.MAX_OTP_TRY , max_length=2)
+    otp_time_out = models.DateTimeField(blank = True,null = True)
+    groups = models.ManyToManyField(
+        Permission,
+        related_name='employees_groups',
+    )
+
+    user_permissions = models.ManyToManyField(
+        Permission,
+        related_name='employees_permissions',
+    )
+
+    objects = UserManager()
+    USERNAME_FIELD = "email"
+
+    def __str__(self) -> str:
+        return self.email
     
 

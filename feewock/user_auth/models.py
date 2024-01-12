@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractBaseUser , PermissionsMixin ,BaseUserManager , Group
+from django.contrib.auth.models import AbstractBaseUser , PermissionsMixin ,BaseUserManager , Permission
 from django.db import models
 from django.conf import settings
 from django.core.validators import RegexValidator , validate_email
@@ -56,9 +56,15 @@ class UserModel(AbstractBaseUser , PermissionsMixin):
     is_staff = models.BooleanField(default = False)
     user_registered_at = models.DateTimeField(auto_now_add = True)
 
+    group = models.ManyToManyField(
+        Permission,
+        related_name='user_model_permission',
+    )
+
     USERNAME_FIELD =  "email"
 
     objects = UserManager()
+
 
     def __str__(self) -> str:
         return self.email
