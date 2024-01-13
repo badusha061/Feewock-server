@@ -16,17 +16,14 @@ class MainServiceSerializer(ModelSerializer):
 
 
 class SubServiceSerializer(ModelSerializer):
-    mainservice = MainServiceSerializer()
     class Meta:
        model = SubService
        fields = ['id','name','Image','mainservice','is_active']
-    read_only_fields = ["id"]
 
-    def to_representation(self, instance):
-        if instance is None:
-            return None
-        return super().to_representation(instance)
-    
+    def create(self, validated_data):
+        pass    
+
+
 
 class EmployeePostionsSubService(ModelSerializer):
     class Meta:

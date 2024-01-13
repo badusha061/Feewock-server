@@ -10,7 +10,9 @@ from .serializer import UserSerializer
 from user_auth.models import UserModel
 from user_auth.utils import send_otp
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializer import CustomerTokenObtainPairSerialzer
+from .serializer import CustomerTokenObtainPairSerialzer 
+from employee_auth.serializer import EmployeeSerializer
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset   = UserModel.objects.all()

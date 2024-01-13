@@ -86,3 +86,5 @@ class CustomerTokenObtainPairSerialzer(TokenObtainPairSerializer):
             data['location'] = user.location
             data['is_active'] = user.is_active
         return data
+
+    
