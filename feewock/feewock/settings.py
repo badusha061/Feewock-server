@@ -56,6 +56,8 @@ INSTALLED_APPS = [
 
 MAX_OTP_TRY = 3
 AUTH_USER_MODEL  = "user_auth.UserModel"
+
+
 MIN_PASSWORD_LENGTH = 8
 
 MIDDLEWARE = [

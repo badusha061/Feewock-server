@@ -36,6 +36,7 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "email",
+            "role",
             "location",
             "phone_number",
             "is_active",
@@ -58,6 +59,7 @@ class UserSerializer(serializers.ModelSerializer):
             location = validated_data["location"],
             phone_number = validated_data["phone_number"],
             email = validated_data["email"],
+            role = validated_data["role"],
             otp = otp,
             otp_expiry = otp_expiry,
             max_otp_try = settings.MAX_OTP_TRY
@@ -84,6 +86,7 @@ class CustomerTokenObtainPairSerialzer(TokenObtainPairSerializer):
             data['email'] = user.email  
             data['number'] = user.phone_number
             data['location'] = user.location
+            data["role"] = user.role
             data['is_active'] = user.is_active
         return data
 

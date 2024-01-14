@@ -14,8 +14,12 @@ from django.core.mail import send_mail
 
 
 class Employees(viewsets.ModelViewSet):
-    queryset = Employees.objects.all()
-    serializer_class = EmployeeSerializer
+    print('calling')
+    try:
+        queryset = Employees.objects.all()
+        serializer_class = EmployeeSerializer
+    except Exception as e:
+        print(e)
 
     @action(detail=True , methods=["PATCH"])
     def generate_otp(self , request , pk):

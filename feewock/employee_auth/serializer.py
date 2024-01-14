@@ -30,7 +30,7 @@ class EmployeeSerializer(ModelSerializer):
 
     class Meta:
         model = Employees 
-        fields = ['id','username','email','gender','phone_number','dob','address','city','state','type_of_work','adhar_number','images','bank_details','is_active','position','location','password1','password2']
+        fields = ['id','username','email','gender','phone_number','dob','address','city','state','type_of_work','adhar_number','images','bank_details','is_active','position','location','password1','password2','role']
     read_only_fields = ["id"]
 
     def validate(self , data):
@@ -43,6 +43,7 @@ class EmployeeSerializer(ModelSerializer):
         employee = Employees(
             username=validated_data["username"],
             gender=validated_data["gender"],
+            role = validated_data["role"],
             dob=validated_data["dob"],
             address=validated_data["address"],
             city=validated_data["city"],

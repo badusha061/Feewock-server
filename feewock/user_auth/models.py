@@ -2,32 +2,25 @@ from django.contrib.auth.models import AbstractBaseUser , PermissionsMixin ,Base
 from django.db import models
 from django.conf import settings
 from django.core.validators import RegexValidator , validate_email
+from django.contrib.auth import get_user_model
+from .common_auth import UserManager
+
+
 
 phone_regex = RegexValidator(
     regex=r"^\d{10}", message="Phone number must be 10 digits only."
 )
 
 
-class UserManager(BaseUserManager):
-    def create_user(self , email , password = None):
-        if not email:
-            raise ValueError("User must have a email")
-        user = self.model(email = email)
-        user.set_password(password)
-        user.save(using= self._db)
-        return user
+ROLE_CHOICES = [
+   (1, 'ADMIN'),
+   (2, 'EMPLOYEE'),
+   (3, 'USER'),
+]
 
-    def create_superuser(self, email , password):
-        user = self.create_user(
-            email=email , password=password
-        )
-        user.is_active = True
-        user.is_staff = True
-        user.is_superuser = True
-        user.save(using= self._db)
-        return user
 
 class UserModel(AbstractBaseUser , PermissionsMixin):
+    role = models.IntegerField(choices = ROLE_CHOICES , null = True)
     first_name = models.CharField(max_length=50,blank = True,null = True)
     last_name = models.CharField( max_length=50,blank = True,null = True)
     email = models.EmailField(
@@ -38,7 +31,7 @@ class UserModel(AbstractBaseUser , PermissionsMixin):
         unique = True,
         
         )
-    location = models.CharField(max_length=50)
+    location = models.CharField(max_length=50,null = True)
     phone_number = models.CharField(
         max_length=50,
         blank = True,
@@ -46,11 +39,10 @@ class UserModel(AbstractBaseUser , PermissionsMixin):
         unique = True,
         validators = [phone_regex]
         )
-    otp = models.CharField( max_length=6)
+    otp = models.CharField( max_length=6 , null = True)
     otp_expiry = models.DateTimeField(blank = True,null = True)
     max_otp_try = models.CharField(default = settings.MAX_OTP_TRY , max_length=2)
     otp_time_out = models.DateTimeField(blank = True,null = True)
-
 
     is_active = models.BooleanField(default = False)
     is_staff = models.BooleanField(default = False)
@@ -68,3 +60,4 @@ class UserModel(AbstractBaseUser , PermissionsMixin):
 
     def __str__(self) -> str:
         return self.email
+    
