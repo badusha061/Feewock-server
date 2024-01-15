@@ -4,6 +4,7 @@ from django.conf import settings
 from rest_framework import serializers
 import random
 from datetime import datetime , timedelta
+from django.core.mail import send_mail
 
 
 
@@ -39,6 +40,9 @@ class EmployeeSerializer(ModelSerializer):
         return data
     
     def create(self, validated_data):
+        otp = random.randint(1000,9999)
+        otp_expiry = datetime.now() + timedelta(minutes=2)
+
         position_data = validated_data.pop("position", None)
         employee = Employees(
             username=validated_data["username"],
@@ -53,7 +57,9 @@ class EmployeeSerializer(ModelSerializer):
             location=validated_data["location"],
             phone_number=validated_data["phone_number"],
             email=validated_data["email"],
-            max_otp_try=settings.MAX_OTP_TRY
+            max_otp_try=settings.MAX_OTP_TRY,
+            otp = otp,
+            otp_expiry= otp_expiry
         )
         employee.save()
         if position_data:
@@ -62,4 +68,11 @@ class EmployeeSerializer(ModelSerializer):
             employee.position.set(position_ids)
         employee.set_password(validated_data["password1"])
         employee.save()
+        
+        email = validated_data["email"]
+        subject = 'YOUR ACCOUNT VERIFICATION EMAIL'
+        message = f'Your otp is{otp}'
+        email_from = settings.EMAIL_HOST_USER
+        send_mail(subject,message,email_from,[email])
+
         return employee

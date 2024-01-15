@@ -8,13 +8,13 @@ from django.utils import timezone
 from rest_framework.response import Response 
 import random
 import datetime
+from datetime import datetime
 from  django.conf import settings
 from django.core.mail import send_mail
 # Create your views here.
 
 
 class Employees(viewsets.ModelViewSet):
-    print('calling')
     try:
         queryset = Employees.objects.all()
         serializer_class = EmployeeSerializer
@@ -24,7 +24,7 @@ class Employees(viewsets.ModelViewSet):
     @action(detail=True , methods=["PATCH"])
     def generate_otp(self , request , pk):
         instance = self.get_object()
-        if (int(instance.max_otp_try)) == 0 and timezone.now() < instance.max_otp_try:
+        if (int(instance.max_otp_try)) == 0:
             return Response (
                 "max otp try reached , try after an hour"
             )

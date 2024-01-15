@@ -8,7 +8,8 @@ from user_auth.api.serializer import UserSerializer
 
 
 class UserListView(generics.ListAPIView):
-    queryset = UserModel.objects.all()
+    def get_queryset(self):
+        return UserModel.objects.filter(role = 3)
     serializer_class = UserSerializer
 
 class UserBlockUnblock(viewsets.ViewSet):

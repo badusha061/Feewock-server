@@ -52,7 +52,7 @@ class UserSerializer(serializers.ModelSerializer):
     
     def create(self , validated_data):
         otp = random.randint(1000,9999)
-        otp_expiry = datetime.now() + timedelta(minutes=10)
+        otp_expiry = datetime.now() + timedelta(minutes=2)
         user = UserModel(
             first_name = validated_data["first_name"],
             last_name = validated_data["last_name"],
@@ -64,6 +64,7 @@ class UserSerializer(serializers.ModelSerializer):
             otp_expiry = otp_expiry,
             max_otp_try = settings.MAX_OTP_TRY
         )
+        
         user.set_password(validated_data["password1"])
         user.save()
         send_otp(validated_data["phone_number"],otp)

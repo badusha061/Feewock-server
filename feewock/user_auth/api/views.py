@@ -42,7 +42,7 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=True , methods= ["PATCH"])
     def generate_otp(self,request , pk = None):
         instance = self.get_object()
-        if int(instance.max_otp_try) == 0 and timezone.now() < instance.otp_max_out:
+        if int(instance.max_otp_try) == 0:
             return Response(
                 "max otp try reached , try after an hour",
                 status= status.HTTP_400_BAD_REQUEST
