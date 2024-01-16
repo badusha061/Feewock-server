@@ -3,6 +3,8 @@ from django.urls import path , include
 from rest_framework.routers import DefaultRouter
 from user_auth.api import views
 from employee_auth.views import Employees
+from django.conf import settings 
+from django.conf.urls.static import static
 
 router = DefaultRouter()
 router.register("user" , views.UserViewSet , basename="user")
@@ -16,3 +18,6 @@ urlpatterns = [
     path('service/', include('service.urls')),
 ]
 urlpatterns += router.urls
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

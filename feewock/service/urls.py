@@ -1,14 +1,17 @@
 from django.urls import path
-from .views import CreateMainService ,UpdateMainservice , CreateSubService , UpdateSubservice , Postions , UpdatePositions
+from .views import *
 
-urlpatterns = [    
-    path('createmainservice',CreateMainService.as_view() , name='createmain_serlizer'),
-    path('updatemainservice/<int:pk>/',UpdateMainservice.as_view() , name='updatemain_serlizer'),
+urlpatterns = [   
+    # Main service 
+    path('createmainservice', CreateMainService.as_view(), name='createmain_serlizer'),
+    path('updatemainservice/<int:pk>/', UpdateMainservice.as_view(), name='updatemain_serlizer'),
 
-    path('subservice',CreateSubService.as_view() , name='createsub_serlizer'),
-    path('updatesubervice/<int:pk>/',UpdateSubservice.as_view() , name='updatesub_serlizer'),
-    path('postion',Postions.as_view() , name='positions'),
-    path('updatepostion/<int:pk>/',UpdatePositions.as_view() , name='update_positions'),
+    # Sub Service
+    path('subservice', ListSubService.as_view(), name='listingsub_serlizer'),
+    path('createsubservice', CreateSubService.as_view(), name='creatingsub-service'), 
+    path('updatesubervice/<int:pk>/', UpdateSubservice.as_view(), name='updatesub_serlizer'),
 
-
+    # Positions
+    path('postion', Postions.as_view(), name='positions'),
+    path('updatepostion/<int:pk>/', UpdatePositions.as_view(), name='update_positions'),
 ]

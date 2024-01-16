@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from .models import MainService , SubService
 from employee_auth.models import EmployeePostion
+from rest_framework import serializers
 
 class MainServiceSerializer(ModelSerializer):
     class Meta:
@@ -15,13 +16,20 @@ class MainServiceSerializer(ModelSerializer):
         return super().to_representation(instance)
 
 
-class SubServiceSerializer(ModelSerializer):
+class SubServiceSerializerFetch(ModelSerializer):
+    mainservice = MainServiceSerializer()
     class Meta:
        model = SubService
-       fields = ['id','name','Image','mainservice','is_active']
+       fields = ['id','name','mainservice','Image']
 
-    def create(self, validated_data):
-        pass    
+   
+
+class SubServiceSerializer(ModelSerializer):
+    mainservice = serializers.PrimaryKeyRelatedField(queryset=MainService.objects.all())
+
+    class Meta:
+        model = SubService
+        fields = ["id","name","mainservice", "Image"]
 
 
 
