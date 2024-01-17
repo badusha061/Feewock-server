@@ -7,10 +7,16 @@ from rest_framework.decorators import action
 from django.utils import timezone
 from rest_framework.response import Response 
 import random
-import datetime
-from datetime import datetime
+import datetime 
+from django.utils import timezone
 from  django.conf import settings
+
 from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+
+
 # Create your views here.
 
 
@@ -42,12 +48,29 @@ class Employees(viewsets.ModelViewSet):
         else:
             instance.otp_max_out = None
             instance.max_otp_try = max_otp_try
+
         instance.save()
         email = instance.email
         subject = 'YOUR ACCOUNT VERIFICATION EMAIL'
-        message = f'Your otp is{otp}'
+        message = f'{otp}'
         email_from = settings.EMAIL_HOST_USER
-        send_mail(subject,message,email_from,[email])
+        print(email)
+        print(message)
+        print(email_from)
+        context ={
+            "username":instance.username,
+            "otp_message":message
+        }
+        html_messages = render_to_string("email.html",context=context)
+        plain_message = strip_tags(html_messages)
+        message = EmailMultiAlternatives(
+            subject=subject,
+            body=plain_message,
+            from_email=email_from,
+            to=[instance.email]
+        )
+        message.attach_alternative(html_messages,"text/html")
+        message.send()
         return Response("Successfully generate new otp ", status= status.HTTP_200_OK)
     
     @action(detail=True , methods=["PATCH"])

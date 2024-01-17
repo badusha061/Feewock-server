@@ -5,6 +5,10 @@ from rest_framework import serializers
 import random
 from datetime import datetime , timedelta
 from django.core.mail import send_mail
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 
 
@@ -68,11 +72,23 @@ class EmployeeSerializer(ModelSerializer):
             employee.position.set(position_ids)
         employee.set_password(validated_data["password1"])
         employee.save()
-        
+        username = validated_data["username"]
         email = validated_data["email"]
         subject = 'YOUR ACCOUNT VERIFICATION EMAIL'
         message = f'Your otp is{otp}'
         email_from = settings.EMAIL_HOST_USER
-        send_mail(subject,message,email_from,[email])
-
+        context ={
+            "username":username,
+            "otp_message":message
+        }
+        html_messages = render_to_string("email.html",context=context)
+        plain_message = strip_tags(html_messages)
+        message = EmailMultiAlternatives(
+            subject=subject,
+            body=plain_message,
+            from_email=email_from,
+            to=[email]
+        )
+        message.attach_alternative(html_messages,"text/html")
+        message.send()
         return employee

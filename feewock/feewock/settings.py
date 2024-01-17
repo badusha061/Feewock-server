@@ -54,7 +54,7 @@ INSTALLED_APPS = [
 
 
 
-MAX_OTP_TRY = 3
+MAX_OTP_TRY = 4
 AUTH_USER_MODEL  = "user_auth.UserModel"
 
 
@@ -80,7 +80,7 @@ ROOT_URLCONF = 'feewock.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
