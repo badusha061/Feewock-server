@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .serializer import MainServiceSerializer , SubServiceSerializer , EmployeePostionsSubService , SubServiceSerializerFetch
-from rest_framework.generics import ListCreateAPIView , RetrieveUpdateDestroyAPIView
+from .serializer import MainServiceSerializer , SubServiceSerializer , EmployeePostionsSubService , SubServiceSerializerFetch , FetchMainService
+from rest_framework.generics import ListCreateAPIView , RetrieveUpdateDestroyAPIView , ListAPIView
 from .models import MainService , SubService 
 from employee_auth.models import EmployeePostion
 from rest_framework import viewsets
@@ -40,3 +40,9 @@ class Postions(ListCreateAPIView):
 class UpdatePositions(RetrieveUpdateDestroyAPIView):
     queryset = EmployeePostion.objects.all()
     serializer_class = EmployeePostionsSubService
+
+
+class ListingMainService(ListAPIView):
+    queryset = MainService.objects.all()
+    serializer_class = FetchMainService
+    

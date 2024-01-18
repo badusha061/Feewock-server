@@ -14,4 +14,6 @@ urlpatterns = [
     # Positions
     path('postion', Postions.as_view(), name='positions'),
     path('updatepostion/<int:pk>/', UpdatePositions.as_view(), name='update_positions'),
+
+    path('list',ListingMainService.as_view() , name='listing')
 ]

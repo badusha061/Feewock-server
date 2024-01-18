@@ -39,4 +39,11 @@ class EmployeePostionsSubService(ModelSerializer):
         fields = ['id','name', 'is_active']
     read_only_fields = ["id"]
 
-    
+
+
+class FetchMainService(ModelSerializer):
+    subservice = SubServiceSerializerFetch(many = True, read_only=True)
+
+    class Meta:
+        model = MainService
+        fields = ['name','subservice']

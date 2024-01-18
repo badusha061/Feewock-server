@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'employee_auth',
     'service',
+    'offerservice',
     
 ]
 
