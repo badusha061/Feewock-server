@@ -4,6 +4,7 @@ from django.contrib.auth.models import Group
 from django.core.validators import RegexValidator , validate_email
 from django.conf import settings
 from user_auth.models import UserModel
+from service.models import SubService
 
 phone_regex = RegexValidator(
     regex=r"^\d{10}", message="Phone number must be 10 digits only."
@@ -64,11 +65,10 @@ class Employees(UserModel):
     adhar_number = models.BigIntegerField(unique=True,null = True)
     images = models.ImageField(upload_to='Image',blank=True)
     bank_details = models.ForeignKey(BankDetails,on_delete=models.CASCADE, null = True)
-    position = models.ManyToManyField(EmployeePostion,blank=True)
-   
+    service = models.ManyToManyField(SubService, blank=True)
 
     def __str__(self) -> str:
-        return self.email
+        return self.username
     
 
 

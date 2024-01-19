@@ -37,6 +37,10 @@ class EmployeesListView(generics.ListCreateAPIView):
     def get_queryset(self):
         return Employees.objects.filter(role = 2)
     
+class EmployeesIndvualView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = EmployeeSerializer
+    def get_queryset(self):
+        return Employees.objects.filter(role = 2)    
 
 class EmployeeBlockUnblock(viewsets.ViewSet):
     def block(self , request , pk= None):

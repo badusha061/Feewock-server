@@ -9,7 +9,7 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-
+from service.serializer import SubServiceSerializerFetch
 
 
 class EmployeeSerializer(ModelSerializer):
@@ -32,10 +32,9 @@ class EmployeeSerializer(ModelSerializer):
             )
         }
     )
-
     class Meta:
         model = Employees 
-        fields = ['id','username','email','gender','phone_number','dob','address','city','state','type_of_work','adhar_number','images','bank_details','is_active','position','location','password1','password2','role']
+        fields = ['id','username','email','gender','phone_number','dob','address','city','state','type_of_work','adhar_number','images','bank_details','is_active','service','location','password1','password2','role']
     read_only_fields = ["id"]
 
     def validate(self , data):
@@ -46,8 +45,12 @@ class EmployeeSerializer(ModelSerializer):
     def create(self, validated_data):
         otp = random.randint(1000,9999)
         otp_expiry = datetime.now() + timedelta(minutes=2)
+        service_data = validated_data.pop("service", None)
+        print('service ',service_data)
 
-        position_data = validated_data.pop("position", None)
+        if service_data is None:
+            return False
+        
         employee = Employees(
             username=validated_data["username"],
             gender=validated_data["gender"],
@@ -66,16 +69,16 @@ class EmployeeSerializer(ModelSerializer):
             otp_expiry= otp_expiry
         )
         employee.save()
-        if position_data:
-            position_ids = [position.id if hasattr(position, 'id') else position for position in position_data]
+        if service_data:
+            service_ids = [service.id if hasattr(service, 'id') else service for service in service_data]
 
-            employee.position.set(position_ids)
+            employee.service.set(service_ids)
         employee.set_password(validated_data["password1"])
         employee.save()
         username = validated_data["username"]
         email = validated_data["email"]
         subject = 'YOUR ACCOUNT VERIFICATION EMAIL'
-        message = f'Your otp is{otp}'
+        message = f'{otp}'
         email_from = settings.EMAIL_HOST_USER
         context ={
             "username":username,
@@ -92,3 +95,8 @@ class EmployeeSerializer(ModelSerializer):
         message.attach_alternative(html_messages,"text/html")
         message.send()
         return employee
+
+class EmployeesListSerlizer(ModelSerializer):
+    class Meta:
+        model = Employees
+        fields = ['id','service','username','address']

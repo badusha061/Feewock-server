@@ -10,6 +10,7 @@ urlpatterns = [
 
     #Employee
     path('employeelist',EmployeesListView.as_view(), name='employee-list'),
+    path('employeeindivual/<int:pk>/',EmployeesIndvualView.as_view(), name='employee-list'),
     path('employeelist/<int:pk>/block',EmployeeBlockUnblock.as_view({'put':'block'}) , name='userblock'),
     path('employeelist/<int:pk>/unblock',EmployeeBlockUnblock.as_view({'put':'unblock'}) , name='userunblock'),
 ]

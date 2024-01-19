@@ -49,7 +49,9 @@ INSTALLED_APPS = [
     'employee_auth',
     'service',
     'offerservice',
-    
+    'channels',
+    'user_notifications', 
+    'listemployee' 
 ]
 
 
