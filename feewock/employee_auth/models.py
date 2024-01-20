@@ -66,6 +66,8 @@ class Employees(UserModel):
     images = models.ImageField(upload_to='Image',blank=True)
     bank_details = models.ForeignKey(BankDetails,on_delete=models.CASCADE, null = True)
     service = models.ManyToManyField(SubService, blank=True)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
 
     def __str__(self) -> str:
         return self.username

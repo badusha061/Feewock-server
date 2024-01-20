@@ -34,7 +34,7 @@ class EmployeeSerializer(ModelSerializer):
     )
     class Meta:
         model = Employees 
-        fields = ['id','username','email','gender','phone_number','dob','address','city','state','type_of_work','adhar_number','images','bank_details','is_active','service','location','password1','password2','role']
+        fields = ['id','username','email','gender','phone_number','dob','address','city','state','type_of_work','adhar_number','images','bank_details','is_active','service','location','password1','password2','role','latitude','longitude']
     read_only_fields = ["id"]
 
     def validate(self , data):
@@ -64,6 +64,8 @@ class EmployeeSerializer(ModelSerializer):
             location=validated_data["location"],
             phone_number=validated_data["phone_number"],
             email=validated_data["email"],
+            latitude = validated_data["latitude"],
+            longitude = validated_data["longitude"],
             max_otp_try=settings.MAX_OTP_TRY,
             otp = otp,
             otp_expiry= otp_expiry

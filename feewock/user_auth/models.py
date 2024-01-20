@@ -31,7 +31,7 @@ class UserModel(AbstractBaseUser , PermissionsMixin):
         unique = True,
         
         )
-    location = models.CharField(max_length=50,null = True)
+    location = models.CharField(max_length=150,null = True)
     phone_number = models.CharField(
         max_length=50,
         blank = True,
