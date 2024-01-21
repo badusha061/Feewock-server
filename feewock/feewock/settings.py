@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'offerservice',
     'channels',
     'user_notifications', 
-    'listemployee' 
+    'listemployee',
+    'banner' 
 ]
 
 

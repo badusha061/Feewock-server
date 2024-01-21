@@ -50,13 +50,9 @@ class Employees(viewsets.ModelViewSet):
             instance.max_otp_try = max_otp_try
 
         instance.save()
-        email = instance.email
         subject = 'YOUR ACCOUNT VERIFICATION EMAIL'
         message = f'{otp}'
         email_from = settings.EMAIL_HOST_USER
-        print(email)
-        print(message)
-        print(email_from)
         context ={
             "username":instance.username,
             "otp_message":message

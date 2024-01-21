@@ -39,10 +39,9 @@ class ListEmployees(ListAPIView):
                      'employee_id':emp.id,
                      'distance_difference':difference_betweeen
                 })
+            print(employee_distance)
             sorted_employee_distance = sorted(employee_distance, key=lambda x: x['distance_difference'])
-            print(sorted_employee_distance)
             sorted_ids = [ item['employee_id'] for item in  sorted_employee_distance]
-            print('sorted ids',sorted_ids)
             sorted_employee = Employees.objects.filter(id__in = sorted_ids)
           
             employee_dict = {employee.id: employee for employee in sorted_employee}
