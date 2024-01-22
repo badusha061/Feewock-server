@@ -12,6 +12,8 @@ from user_auth.utils import send_otp
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializer import CustomerTokenObtainPairSerialzer 
 from employee_auth.serializer import EmployeeSerializer
+from rest_framework.permissions import IsAuthenticated 
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class UserViewSet(viewsets.ModelViewSet):

@@ -46,13 +46,16 @@ INSTALLED_APPS = [
     'user_auth',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'employee_auth',
     'service',
     'offerservice',
     'channels',
     'user_notifications', 
     'listemployee',
-    'banner' 
+    'banner',
+    'EmployeeDashboard',
+    'EmployeeProfile'
 ]
 
 
@@ -100,7 +103,6 @@ TEMPLATES = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
@@ -109,10 +111,11 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
-     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+     'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
      'ROTATE_REFRESH_TOKENS': True,
-     'BLACKLIST_AFTER_ROTATION': True
+     'BLACKLIST_AFTER_ROTATION': True,
+     'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
 
@@ -177,6 +180,10 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# CORS_ALLOW_CREDENTIALS = True 
+
+
 
 
 CORS_ALLOWED_ORIGINS = [
