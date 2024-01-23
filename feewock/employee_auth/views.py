@@ -15,7 +15,7 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 
 # Create your views here.
 
@@ -90,3 +90,4 @@ class Employees(viewsets.ModelViewSet):
             "Employee Active or Please enter the correct otp",
             status=  status.HTTP_400_BAD_REQUEST
         )
+    

@@ -2,6 +2,7 @@ from rest_framework.serializers import ModelSerializer
 import random
 from datetime import datetime , timedelta
 from django.conf import settings
+from rest_framework_simplejwt.tokens import Token
 from user_auth.models import UserModel
 from rest_framework import serializers
 from user_auth.utils import send_otp
@@ -90,5 +91,20 @@ class CustomerTokenObtainPairSerialzer(TokenObtainPairSerializer):
             data["role"] = user.role
             data['is_active'] = user.is_active
         return data
+    
+    
+    # @classmethod
+    # def get_token(cls, user):
+    #     token = super().get_token(user)
+    #     token['is_admin'] =user.is_superuser
+    #     token['id'] = user.id
+    #     token['first_name'] = user.first_name
+    #     token['last_name'] = user.last_name
+    #     token['email'] = user.email  
+    #     token['number'] = user.phone_number
+    #     token['location'] = user.location
+    #     token["role"] = user.role
+    #     token['is_active'] = user.is_active
+    #     return token
 
     

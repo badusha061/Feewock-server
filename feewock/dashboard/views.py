@@ -7,16 +7,19 @@ from user_auth.api.serializer import UserSerializer
 from employee_auth.serializer import EmployeeSerializer
 from employee_auth.models import Employees
 from rest_framework.decorators import permission_classes
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser , IsAuthenticated
+from .serializer import EmployeeIndvualSerializers
 # Create your views here.
 
-@permission_classes([IsAdminUser])
+
+# @permission_classes([IsAuthenticated])
 class UserListView(generics.ListAPIView):
     def get_queryset(self):
         return UserModel.objects.filter(role = 3)
     serializer_class = UserSerializer
-    
 
+
+# @permission_classes([IsAuthenticated])        
 class UserBlockUnblock(viewsets.ViewSet):
     def block(self , request , pk= None):
         try:
@@ -34,17 +37,24 @@ class UserBlockUnblock(viewsets.ViewSet):
             return Response(status=status.HTTP_200_OK)
         except Exception as e:
             return Response(status= status.HTTP_400_BAD_REQUEST)
-     
+        
+
+# @permission_classes([IsAuthenticated])
 class EmployeesListView(generics.ListCreateAPIView):
     serializer_class = EmployeeSerializer
     def get_queryset(self):
         return Employees.objects.filter(role = 2)
-    
+
+
+# @permission_classes([IsAuthenticated]) 
 class EmployeesIndvualView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = EmployeeSerializer
+    serializer_class = EmployeeIndvualSerializers
     def get_queryset(self):
         return Employees.objects.filter(role = 2)    
 
+
+
+# @permission_classes([IsAuthenticated])
 class EmployeeBlockUnblock(viewsets.ViewSet):
     def block(self , request , pk= None):
         try:

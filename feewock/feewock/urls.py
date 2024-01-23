@@ -18,6 +18,7 @@ urlpatterns = [
     path('service/', include('service.urls')),
     path('offer/',include('offerservice.urls')),
     path('list/',include('listemployee.api.urls')),
+    path('employees/', include('EmployeeProfile.api.urls')),
 ]
 urlpatterns += router.urls
 
