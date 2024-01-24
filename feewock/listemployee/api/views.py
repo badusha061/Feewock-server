@@ -7,17 +7,19 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse
 
+#calculate the two latitude and longitude for user and  employees
 def distance(user_latitude, user_longitude, employee_latitude, employee_longitude):
-        lon1 = radians(user_longitude)
-        lon2 = radians(employee_longitude)
-        lat1 = radians(user_latitude)
-        lat2 = radians(employee_latitude)
-        dlon = lon2 - lon1 
-        dlat = lat2 - lat1
-        a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
-        c = 2 * asin(sqrt(a)) 
-        r = 6371                
-        return(c * r)
+    lon1 = radians(user_longitude)
+    lon2 = radians(employee_longitude)
+    lat1 = radians(user_latitude)
+    lat2 = radians(employee_latitude)
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1
+    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+    c = 2 * asin(sqrt(a)) 
+    r = 6371 
+    return c * r
+
 
 class ListEmployees(ListAPIView):
     serializer_class = EmployeeSerializer
@@ -39,13 +41,11 @@ class ListEmployees(ListAPIView):
                      'employee_id':emp.id,
                      'distance_difference':difference_betweeen
                 })
-            print('after',employee_distance)
             sorted_employee_distance = sorted(employee_distance, key=lambda x: x['distance_difference'])
             sorted_ids = [ item['employee_id'] for item in  sorted_employee_distance]
             sorted_employee = Employees.objects.filter(id__in = sorted_ids)
           
             employee_dict = {employee.id: employee for employee in sorted_employee}
             ordered_employees = [employee_dict[employee_id] for employee_id in sorted_ids]
-            print('the final output is the',sorted_employee_distance)
 
             return ordered_employees
