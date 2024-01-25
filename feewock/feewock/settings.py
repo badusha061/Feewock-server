@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    #  'daphne' , 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -51,13 +52,14 @@ INSTALLED_APPS = [
     'employee_auth',
     'service',
     'offerservice',
-    'channels',
+    'channels' , 
     'user_notifications', 
     'listemployee',
     'banner',
     'EmployeeDashboard',
     'EmployeeProfile',
-    'social_django'
+    'social_django',
+    'chat'
 ]
 
 
@@ -84,6 +86,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'feewock.urls'
 
+# ASGI_APPLICATION = "chat.routing.application" 
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': "channels.layers.InMemoryChannelLayer"
+        }
+    }
 
 
 
@@ -121,13 +130,7 @@ REST_FRAMEWORK = {
     ]
 }
 
-# SIMPLE_JWT = {
-#      'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-#      'REFRESH_TOKEN_LIFETIME': timedelta(days=90),
-#      'ROTATE_REFRESH_TOKENS': True,
-#      'BLACKLIST_AFTER_ROTATION': True,
-#      'AUTH_HEADER_TYPES': ('Bearer',),
-# }
+
 
 
 SIMPLE_JWT = {
