@@ -19,7 +19,7 @@ urlpatterns = [
     path('offer/',include('offerservice.urls')),
     path('list/',include('listemployee.api.urls')),
     path('employees/', include('EmployeeProfile.api.urls')),
-    path('chat',include('chat.urls')),
+    path('chat/',include('chat.api.urls')),
 ]
 urlpatterns += router.urls
 

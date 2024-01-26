@@ -27,13 +27,13 @@ SECRET_KEY = 'django-insecure-4ju_#bjp3=v^f^9@i%g^uwt2=new5&1@g+((^ab!644f^^mu2^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    #  'daphne' , 
+    'daphne' , 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -86,13 +86,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'feewock.urls'
 
-# ASGI_APPLICATION = "chat.routing.application" 
+ASGI_APPLICATION = "chat.routing.application" 
+
 
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': "channels.layers.InMemoryChannelLayer"
-        }
-    }
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+        "ALLOWED_HOSTS": ["*"],
+    },
+}
 
 
 
@@ -134,7 +136,7 @@ REST_FRAMEWORK = {
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,
@@ -174,7 +176,7 @@ SIMPLE_JWT = {
 }
 
 
-WSGI_APPLICATION = 'feewock.wsgi.application'
+# WSGI_APPLICATION = 'feewock.wsgi.application'
 
 
 
@@ -238,6 +240,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 # CORS_ALLOW_CREDENTIALS = True 
 
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:5173",
+    "http://127.0.0.1:8000"
+]
 
 
 

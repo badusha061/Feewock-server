@@ -5,14 +5,17 @@ from .models import MainService , SubService
 from employee_auth.models import EmployeePostion
 from rest_framework import viewsets
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import IsAdminUser 
+from rest_framework.decorators import permission_classes
 
 # Create your views here.
 
+@permission_classes([IsAdminUser])
 class CreateMainService(ListCreateAPIView):
     queryset = MainService.objects.all()
     serializer_class = MainServiceSerializer
 
-
+@permission_classes([IsAdminUser])
 class UpdateMainservice(RetrieveUpdateDestroyAPIView):
     queryset = MainService.objects.all()
     serializer_class = MainServiceSerializer
