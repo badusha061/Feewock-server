@@ -39,6 +39,7 @@ class UserModel(AbstractBaseUser , PermissionsMixin):
         unique = True,
         validators = [phone_regex]
         )
+    images = models.ImageField(upload_to='Images',null= True , blank=True)
     otp = models.CharField( max_length=6 , null = True)
     otp_expiry = models.DateTimeField(blank = True,null = True)
     max_otp_try = models.CharField(default = settings.MAX_OTP_TRY , max_length=2)

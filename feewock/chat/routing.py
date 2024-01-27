@@ -9,7 +9,7 @@ from django.core.asgi import get_asgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'feewock.settings')
 
 websocket_urlpatterns = [
-    re_path(r'^ws/(?P<room_name>[^/]+)/$', TextConsumer.as_asgi()),
+    re_path(r'^ws/chat/(?P<room_name>[\w_]+)/$', TextConsumer.as_asgi()),
 ]
 
 application = ProtocolTypeRouter({

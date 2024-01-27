@@ -10,10 +10,11 @@ from .serializer import UserSerializer
 from user_auth.models import UserModel
 from user_auth.utils import send_otp
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializer import CustomerTokenObtainPairSerialzer 
-from employee_auth.serializer import EmployeeSerializer
+from .serializer import CustomerTokenObtainPairSerialzer , UserIndvualSerializers , UserIndvualImageSerializers
 from rest_framework.permissions import IsAuthenticated 
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -71,3 +72,16 @@ class UserViewSet(viewsets.ModelViewSet):
 
 class CustomerTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomerTokenObtainPairSerialzer
+
+
+
+@permission_classes([IsAuthenticated])
+class UserIndivualView(RetrieveUpdateDestroyAPIView):
+    serializer_class = UserIndvualSerializers
+    queryset = UserModel.objects.all()
+
+
+@permission_classes([IsAuthenticated])
+class UserIndivualImage(RetrieveUpdateDestroyAPIView):
+    serializer_class = UserIndvualImageSerializers
+    queryset = UserModel.objects.all()

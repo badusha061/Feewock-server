@@ -108,3 +108,15 @@ class CustomerTokenObtainPairSerialzer(TokenObtainPairSerializer):
     #     return token
 
     
+class UserIndvualSerializers(ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ['id','first_name','last_name','email','phone_number','location','images']
+    read_only_fields = ["id"]
+
+
+class UserIndvualImageSerializers(ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = ['id','images']
+    read_only_fields = ["id"]
