@@ -53,6 +53,7 @@ class TextConsumer(AsyncWebsocketConsumer):
 
     
     async def chat_message(self, event):
+        print('event is the',event)
         print('the chat message is working')
         print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11')
         print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11')
