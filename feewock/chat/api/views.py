@@ -14,10 +14,11 @@ class GetMessage(ListAPIView):
 
 
 
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class GetEmployeeMessage(ListAPIView):
     serializer_class =EmployeeChatSerializer
     def get_queryset(self):
         employee_id = self.kwargs['pk']
+        print(employee_id)
         return Chat.objects.filter(receiver__in = [employee_id])
     

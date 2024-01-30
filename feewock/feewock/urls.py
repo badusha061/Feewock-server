@@ -20,6 +20,8 @@ urlpatterns = [
     path('list/',include('listemployee.api.urls')),
     path('employees/', include('EmployeeProfile.api.urls')),
     path('chat/',include('chat.api.urls')),
+    path('post/',include('post.api.urls')),
+
 ]
 urlpatterns += router.urls
 
