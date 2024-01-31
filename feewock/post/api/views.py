@@ -21,6 +21,6 @@ class UpdatePost(RetrieveUpdateDestroyAPIView):
 class ListPostIndivually(ListCreateAPIView):
     serializer_class = PostSerializer
     def get_queryset(self):
-        employee_id = self.kwargs['id']
-        return Posts.objects.get(employee_id = employee_id)
+        employee_id = self.kwargs['pk']
+        return Posts.objects.filter(employee = employee_id)
     

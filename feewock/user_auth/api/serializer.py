@@ -111,7 +111,7 @@ class CustomerTokenObtainPairSerialzer(TokenObtainPairSerializer):
 class UserIndvualSerializers(ModelSerializer):
     class Meta:
         model = UserModel
-        fields = ['id','first_name','last_name','email','phone_number','location','images']
+        fields = ['id','first_name','last_name','email','phone_number','location','images','is_active']
     read_only_fields = ["id"]
 
 

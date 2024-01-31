@@ -51,26 +51,18 @@ class TextConsumer(AsyncWebsocketConsumer):
             }
         )
 
+        await self.send(text_data=json.dumps({'message': 'Message received successfully!'}))
     
     async def chat_message(self, event):
-        print('event is the',event)
-        print('the chat message is working')
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11')
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11')
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11')
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11')
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11')
-
         # Receive message from room group
         text = event['message']
         sender = event['sender']
-        print(text)
-        print(sender)
         # Send message to WebSocket
-        self.send(text_data=json.dumps({
+        await self.send(text_data=json.dumps({
             'text': text,
             'sender': sender
         }))
+
 
 
 
