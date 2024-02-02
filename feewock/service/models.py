@@ -10,8 +10,8 @@ class MainService(models.Model):
     def delete(self , using = None , keep_parents = False):
         self.is_active = False
         self.save()
-    def __str__(self) -> str:
-        return self.name
+    # def __str__(self) -> str:
+    #     return self.name
     
     
 class SubService(models.Model):
