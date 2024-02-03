@@ -78,6 +78,7 @@ class CustomerTokenObtainPairSerialzer(TokenObtainPairSerializer):
         user = self.user
         if user.is_superuser:
             data['is_admin'] = True
+            data['role'] = 1
         elif hasattr(user , 'employee'):
             data['is_employee'] = True
         else:

@@ -29,4 +29,5 @@ class EmployeeChatSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     first_name = serializers.CharField()
     last_name = serializers.CharField()
-    images = serializers.ImageField()
+    images = serializers.ImageField(required=False)
+    read_only_fields = ["id"]

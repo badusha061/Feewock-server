@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from django.http import JsonResponse
+from rest_framework import serializers
 
 @permission_classes([IsAuthenticated])
 class GetMessage(ListAPIView):
@@ -16,11 +17,12 @@ class GetMessage(ListAPIView):
 
 
 
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 class GetEmployeeMessage(ListAPIView):
     serializer_class =EmployeeChatSerializer
     def get(self, request, *args, **kwargs):
         employee_id = self.kwargs['pk']
+        print(employee_id)
         dic = {}
         employee_chat = Chat.objects.filter(receiver__in = [employee_id])
         for chat in employee_chat:
@@ -35,7 +37,14 @@ class GetEmployeeMessage(ListAPIView):
                     'last_name':sender_last_name,
                     'images':sender_images
                 }
+        print(dic.values())
         data_list = list(dic.values())
         serializer  = self.serializer_class(data=data_list,many=True)
-        serializer.is_valid(raise_exception=True)
-        return Response(serializer.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+            print('after serializer is valid')
+            print(serializer.data)
+            return Response(serializer.data)
+        except serializers.ValidationError as e:
+            print(e.detail)
+            return Response({"message": "serializer is not valid", "errors": e.detail})
