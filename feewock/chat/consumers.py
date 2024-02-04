@@ -39,14 +39,17 @@ class TextConsumer(AsyncWebsocketConsumer):
         sender = text_data_json['sender']
         recipient_id = self.room_name.split('_')[1]
        
-        await self.save_chat_message(text , sender , recipient_id)
+        chat_message = await self.save_chat_message(text , sender , recipient_id)
 
+        if chat_message and not chat_message.is_read:
+            chat_message.mark_as_read()
+        messages = await self.get_messages(sender , recipient_id)
         # Send message to room group
         await(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': text,
+                'message': messages,
                 'sender': sender
             }
         )
@@ -71,3 +74,13 @@ class TextConsumer(AsyncWebsocketConsumer):
         Chat.objects.create(message = message , sender_id = sender_id ,receiver_id = recipient_id)
 
 
+    @database_sync_to_async
+    def get_messages(self,sender ,recipient_id ):
+        from .models import Chat
+        from chat.api.serializer import ChatSerializer
+
+        messages=[]
+        for instance in Chat.objects.filter(sender__in =[sender , recipient_id] , receiver__in = [sender,recipient_id]):
+            messages=ChatSerializer(instance).data
+
+        return messages

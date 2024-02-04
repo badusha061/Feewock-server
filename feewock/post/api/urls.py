@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ListPosts , ListPostIndivually , UpdatePost  , ListPostIndivuallyUser
+from .views import ListPosts , ListPostIndivually , UpdatePost  , ListPostIndivuallyUser  , LikePost
 
 urlpatterns = [    
     #listing post in user side without permision 
@@ -9,4 +9,7 @@ urlpatterns = [
     path('list/<int:pk>/', ListPostIndivually.as_view() , name='listing-post'),
     path('listuser/<int:pk>/', ListPostIndivuallyUser.as_view() , name='listing-post'),
     path('update/<int:pk>/', UpdatePost.as_view() , name='deleting-post'),   
+
+    #user like post
+    path('like/',LikePost.as_view() , name='user-likes')
 ]

@@ -16,8 +16,6 @@ class ListPostIndivuallyUser(ListCreateAPIView):
     def get_queryset(self):
         employee_id = self.kwargs['pk']
         return Posts.objects.filter(employee = employee_id)
-    
-    
 
 
 @permission_classes([IsAuthenticated])
@@ -34,6 +32,13 @@ class ListPostIndivually(ListCreateAPIView):
         employee_id = self.kwargs['pk']
         print(employee_id)
         return Posts.objects.filter(employee = employee_id)
+    
+
+
+@permission_classes([IsAuthenticated])
+class LikePost(ListCreateAPIView):
+    serializer_class = LikesSerializer
+    queryset = Likes.objects.all()
 
 
 

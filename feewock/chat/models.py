@@ -9,6 +9,11 @@ class Chat(models.Model):
     date = models.DateTimeField(auto_now_add = True)
     is_read = models.BooleanField(default = False)
 
+
+    def mark_as_read(self):
+        self.is_read = True
+        self.save()
+    
     def __str__(self) -> str:
         return f"{self.sender} - {self.receiver}"
     

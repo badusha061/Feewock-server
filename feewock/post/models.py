@@ -1,5 +1,6 @@
 from django.db import models
 from employee_auth.models import Employees
+from user_auth.models import UserModel
 
 # Create your models here.
 
@@ -13,11 +14,11 @@ class Posts(models.Model):
     def __str__(self) -> str:
         return self.employee.username
     
-    
+
     
 class Likes(models.Model):
-    employee = models.ForeignKey(Employees, related_name='likes', on_delete=models.CASCADE)
+    user = models.ForeignKey(UserModel, related_name='likes', on_delete=models.CASCADE)
     post = models.ForeignKey(Posts, related_name = 'likes', on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return self.employee.username
+        return self.user.first_name

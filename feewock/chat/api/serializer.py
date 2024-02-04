@@ -21,7 +21,7 @@ class ChatSerializer(ModelSerializer):
     receiver = UserChatSeralizer(read_only = True)
     class Meta:
         model = Chat
-        fields = ['id','sender','receiver','message']
+        fields = ['id','sender','receiver','message','date']
 
         
 
@@ -29,5 +29,5 @@ class EmployeeChatSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     first_name = serializers.CharField()
     last_name = serializers.CharField()
-    images = serializers.ImageField(required=False)
+    images = serializers.ImageField(allow_null=True, required=False)
     read_only_fields = ["id"]

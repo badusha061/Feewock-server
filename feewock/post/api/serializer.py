@@ -3,7 +3,7 @@ from rest_framework import serializers
 from post.models import Posts , Likes
 from employee_auth.serializer import EmployeeSerializer
 from employee_auth.models import Employees
-
+from user_auth.models import UserModel
 
 class EmployeeSerlizer(ModelSerializer):
     class Meta:
@@ -27,11 +27,12 @@ class PostSerializer(ModelSerializer):
     read_only_fields = ["id"]
 
 
+
 class LikesSerializer(ModelSerializer):
-    employee = serializers.PrimaryKeyRelatedField(queryset=Employees.objects.all())
+    user = serializers.PrimaryKeyRelatedField(queryset=UserModel.objects.all())
     post = serializers.PrimaryKeyRelatedField(queryset=Posts.objects.all())
 
     class Meta:
-        modal = Likes
-        fields = ['id','employee','post']
-    read_only_fields = ["id"]
+        model = Likes  
+        fields = ['id', 'user', 'post']
+        read_only_fields = ["id"]
