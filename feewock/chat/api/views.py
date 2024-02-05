@@ -6,6 +6,7 @@ from rest_framework.decorators import permission_classes
 from rest_framework.response import Response
 from django.http import JsonResponse
 from rest_framework import serializers
+from rest_framework.views import APIView
 
 @permission_classes([IsAuthenticated])
 class GetMessage(ListAPIView):
@@ -43,3 +44,7 @@ class GetEmployeeMessage(ListAPIView):
             return Response(serializer.data)
         except serializers.ValidationError as e:
             return Response({"message": "serializer is not valid", "errors": e.detail})
+
+
+class Is_read(APIView):
+    pass

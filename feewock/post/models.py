@@ -1,7 +1,7 @@
 from django.db import models
 from employee_auth.models import Employees
 from user_auth.models import UserModel
-
+from django.db.models import Count
 # Create your models here.
 
 
@@ -14,6 +14,8 @@ class Posts(models.Model):
     def __str__(self) -> str:
         return self.employee.username
     
+    def likes_count(self):
+        return self.likes.count()
 
     
 class Likes(models.Model):
@@ -22,3 +24,5 @@ class Likes(models.Model):
 
     def __str__(self) -> str:
         return self.user.first_name
+    
+    

@@ -13,10 +13,14 @@ class EmployeeSerlizer(ModelSerializer):
 
 class PostSerializerUser(ModelSerializer):
     employee = EmployeeSerializer(read_only = True)
+    likes_count = serializers.SerializerMethodField()
     class Meta:
         model = Posts 
-        fields = ['id','employee','created_at','image','captions']
+        fields = ['id','employee','created_at','image','captions','likes_count']
     read_only_fields = ["id"]
+    
+    def get_likes_count(self, obj):
+        return obj.likes_count()
 
 
 class PostSerializer(ModelSerializer):
@@ -31,8 +35,7 @@ class PostSerializer(ModelSerializer):
 class LikesSerializer(ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=UserModel.objects.all())
     post = serializers.PrimaryKeyRelatedField(queryset=Posts.objects.all())
-
     class Meta:
-        model = Likes  
-        fields = ['id', 'user', 'post']
-        read_only_fields = ["id"]
+        model = Likes
+        fields = ['id','user','post']
+    read_only_fields = ["id"]

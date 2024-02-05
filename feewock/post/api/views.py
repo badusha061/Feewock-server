@@ -3,6 +3,10 @@ from rest_framework.permissions import IsAuthenticated , AllowAny
 from rest_framework.decorators import permission_classes
 from post.models import Posts , Likes
 from rest_framework.generics import ListCreateAPIView , RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
 
 @permission_classes([AllowAny])
 class ListPosts(ListCreateAPIView):
@@ -42,3 +46,16 @@ class LikePost(ListCreateAPIView):
 
 
 
+@permission_classes([IsAuthenticated])
+class LikePostDelete(APIView):
+    serializer_class = LikesSerializer
+    def delete(self, request, pk, format=None):
+        try:
+            user = request.user 
+            print('user is the ', user)
+            Likes.objects.filter( user = user , post=pk).delete()
+            return Response({"message": "Successfully deleted"}, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e)
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
