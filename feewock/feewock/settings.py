@@ -30,18 +30,25 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 
+SITE_ID = 1 
+
 # Application definition
 
 INSTALLED_APPS = [
     'daphne' , 
     'django.contrib.admin',
     'django.contrib.auth',
+    "django.contrib.sites",
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+
     #apps
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
     'rest_framework',
     'corsheaders',
     'user_auth',
@@ -60,7 +67,8 @@ INSTALLED_APPS = [
     'EmployeeProfile',
     'social_django',
     'chat',
-    'post'
+    'post',
+    'call'
 ]
 
 
@@ -76,6 +84,7 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

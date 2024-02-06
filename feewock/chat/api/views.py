@@ -1,5 +1,5 @@
 from .serializer import ChatSerializer , EmployeeChatSerializer
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView , RetrieveUpdateDestroyAPIView
 from chat.models import Chat
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from django.http import JsonResponse
 from rest_framework import serializers
 from rest_framework.views import APIView
+from rest_framework import status
 
 @permission_classes([IsAuthenticated])
 class GetMessage(ListAPIView):
@@ -14,7 +15,24 @@ class GetMessage(ListAPIView):
     def get_queryset(self):
         sender_id = self.kwargs['sender_id']
         reciever_id = self.kwargs['reciever_id']
-        return Chat.objects.filter(sender__in =[sender_id , reciever_id] , receiver__in = [sender_id,reciever_id] )
+        queryset = Chat.objects.filter(
+            sender__in=[sender_id, reciever_id],
+            receiver__in=[sender_id, reciever_id]
+        )
+        print(self.request.user)
+    
+        for message in queryset:
+            print(message.is_read)
+            if message.receiver.id == self.request.user.id:
+                message.is_read = True
+                message.save()
+
+        return queryset
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 
@@ -46,5 +64,3 @@ class GetEmployeeMessage(ListAPIView):
             return Response({"message": "serializer is not valid", "errors": e.detail})
 
 
-class Is_read(APIView):
-    pass
