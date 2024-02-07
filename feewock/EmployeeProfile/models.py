@@ -4,7 +4,7 @@ from employee_auth.models import Employees
 
 class EmployeesAvailability(models.Model):
     employees = models.ForeignKey(Employees, on_delete=models.CASCADE)
-    date = models.DateField()
+    date = models.DateField(unique = True)
     is_available  = models.BooleanField(default = True)
 
     def __str__(self) -> str:

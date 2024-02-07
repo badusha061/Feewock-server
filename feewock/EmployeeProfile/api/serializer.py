@@ -23,3 +23,5 @@ class EmployeesAvailabilitySerializers(ModelSerializer):
         model = EmployeesAvailability
         fields = ['id','employees','date','is_available']
     read_only_fields = ["id"]
+
+

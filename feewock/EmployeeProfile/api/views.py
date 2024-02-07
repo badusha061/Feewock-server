@@ -18,7 +18,15 @@ class EmployeeUpdate(RetrieveUpdateAPIView):
     queryset = Employees.objects.all()
 
 
-@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])    
 class EmployeesAvailabilityView(ListCreateAPIView):
     serializer_class = EmployeesAvailabilitySerializers
     queryset = EmployeesAvailability.objects.all()
+
+
+@permission_classes([IsAuthenticated])
+class EmployeesAvailabilityViewIndivual(ListCreateAPIView):
+    serializer_class = EmployeesAvailabilitySerializers
+    def get_queryset(self):
+        id = self.kwargs['pk']
+        return EmployeesAvailability.objects.filter(employees= id)
