@@ -21,9 +21,10 @@ urlpatterns = [
     path('employees/', include('EmployeeProfile.api.urls')),
     path('chat/',include('chat.api.urls')),
     path('post/',include('post.api.urls')),
-    path('banner/',include('banner.api.urls'))
-
+    path('banner/',include('banner.api.urls')),
+    path('booking/', include('booking.api.urls')),
 ]
+
 urlpatterns += router.urls
 
 if settings.DEBUG:

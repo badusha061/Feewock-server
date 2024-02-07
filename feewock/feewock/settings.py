@@ -63,12 +63,12 @@ INSTALLED_APPS = [
     'user_notifications', 
     'listemployee',
     'banner',
-    'EmployeeDashboard',
     'EmployeeProfile',
     'social_django',
     'chat',
     'post',
-    'call'
+    'call',
+    'booking'
 ]
 
 
