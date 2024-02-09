@@ -21,9 +21,9 @@ def notify_user(room_name , message):
     room_group_name = f"notification_{room_name}"
     message_text = json.dumps(message)
     async_to_sync(channel_layer.group_send)(
-        room_group_name,
+    room_group_name,
         {
-            'type':'send_notificationuser',
+            'type': 'notificationuser',
             'message': message_text
         }
     )

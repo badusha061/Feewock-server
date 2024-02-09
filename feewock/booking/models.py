@@ -12,7 +12,6 @@ class Appointment(models.Model):
     service_amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField()
     service_time = models.TimeField()
-
     def __str__(self) -> str:
         return self.name
     

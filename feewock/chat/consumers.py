@@ -38,7 +38,10 @@ class TextConsumer(AsyncWebsocketConsumer):
         text = text_data_json['text']
         sender = text_data_json['sender']
         recipient_id = self.room_name.split('_')[1]
-       
+        print(text,'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
+        print(text,'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
+        print(text,'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
+        print(text,'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
         chat_message = await self.save_chat_message(text , sender , recipient_id)
 
         if chat_message and not chat_message.is_read:
@@ -50,7 +53,8 @@ class TextConsumer(AsyncWebsocketConsumer):
             {
                 'type': 'chat_message',
                 'message': messages,
-                'sender': sender
+                'sender': sender,
+                # 'message':text,
             }
         )
 
@@ -137,7 +141,7 @@ class NoficationUser(AsyncWebsocketConsumer):
         )
 
 
-    async def send_notificationuser(self, event):
+    async def notificationuser(self, event):
         message = json.loads(event['message'])
         # Send message to WebSocket
         await self.send(text_data=json.dumps(message))

@@ -6,6 +6,7 @@ class Chat(models.Model):
     sender = models.ForeignKey( UserModel, on_delete=models.CASCADE , related_name = 'send_message')
     receiver = models.ForeignKey( UserModel, on_delete=models.CASCADE,related_name='receiver_message')
     message = models.TextField()
+    thread_name = models.CharField(max_length=200 , null= True)
     date = models.DateTimeField(auto_now_add = True)
     is_read = models.BooleanField(default = False)
 

@@ -30,3 +30,10 @@ class EmployeesAvailabilityViewIndivual(ListCreateAPIView):
     def get_queryset(self):
         id = self.kwargs['pk']
         return EmployeesAvailability.objects.filter(employees= id)
+    
+
+
+# @permission_classes([IsAuthenticated])
+class EmployeesAvailabilityViewIndivualDelete(RetrieveUpdateDestroyAPIView):
+    serializer_class = EmployeesAvailabilitySerializers
+    queryset = EmployeesAvailability.objects.all()
