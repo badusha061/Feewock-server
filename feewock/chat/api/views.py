@@ -19,9 +19,7 @@ class GetMessage(ListAPIView):
         queryset = Chat.objects.filter(
             sender__in=[sender_id, reciever_id],
             receiver__in=[sender_id, reciever_id]
-        )
-        print(self.request.user)
-    
+        ).order_by('date')
         for message in queryset:
             print(message.is_read)
             if message.receiver.id == self.request.user.id:

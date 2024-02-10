@@ -2,9 +2,9 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 import json
 
-def notify_employee(room_name , message):
+def notify_employee(employee_id , message):
     channel_layer = get_channel_layer()
-    room_group_name = f"notification_{room_name}"
+    room_group_name = f"employee_{employee_id}"
     message_text = json.dumps(message)
     async_to_sync(channel_layer.group_send)(
         room_group_name,

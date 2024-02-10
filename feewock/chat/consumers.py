@@ -38,10 +38,6 @@ class TextConsumer(AsyncWebsocketConsumer):
         text = text_data_json['text']
         sender = text_data_json['sender']
         recipient_id = self.room_name.split('_')[1]
-        print(text,'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
-        print(text,'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
-        print(text,'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
-        print(text,'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1')
         chat_message = await self.save_chat_message(text , sender , recipient_id)
 
         if chat_message and not chat_message.is_read:
@@ -54,7 +50,6 @@ class TextConsumer(AsyncWebsocketConsumer):
                 'type': 'chat_message',
                 'message': messages,
                 'sender': sender,
-                # 'message':text,
             }
         )
 
@@ -64,6 +59,14 @@ class TextConsumer(AsyncWebsocketConsumer):
         # Receive message from room group
         text = event['message']
         sender = event['sender']
+        print('the text message is the ', text)
+        print('the text message is the ', text)
+        print('the text message is the ', text)
+        print('the text message is the ', text)
+        print('the text message is the ', text)
+        print('the text message is the ', text)
+        print('the text message is the ', text)
+
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'text': text,
@@ -92,8 +95,8 @@ class TextConsumer(AsyncWebsocketConsumer):
 
 class NoficationEmployee(AsyncWebsocketConsumer):
     async def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'notification_%s' % self.room_name
+        self.employee_id = self.scope['url_route']['kwargs']['employee_id']
+        self.room_group_name = 'employee_%s' % self.employee_id
         print(self.room_group_name)
         # Join room group
         await self.channel_layer.group_add(

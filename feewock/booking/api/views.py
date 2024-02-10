@@ -1,4 +1,4 @@
-from .serializer import AppointmentSerializer , EmployeeActionSerializer , AppointmentSerializerUser , AppointmentSerializerEmployee
+from .serializer import AppointmentSerializer , EmployeeActionSerializer , AppointmentSerializerUser , AppointmentSerializerEmployee, EmployeeActionSerializerAccept
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import ListCreateAPIView 
 from booking.models import Appointment , EmployeeAction
@@ -21,8 +21,8 @@ class appointment(ListCreateAPIView):
             'appointment_details':serializer_data,
             'message':'New appointment created.'
         }
-        room_name = 'test'
-        notify_employee(room_name , message)
+        employee_id  = serializer_data['employee']
+        notify_employee(employee_id , message)
         return appointment
 
 
@@ -62,9 +62,12 @@ class EmployeeActionList(ListCreateAPIView):
     serializer_class = EmployeeActionSerializer
     queryset = EmployeeAction.objects.all()
     def perform_create(self, serializer):
+        if not serializer.is_valid():
+            print(serializer.errors)
+
         action = serializer.save()
         serializer_data = serializer.data 
-        print(serializer_data)
+
         if 'action' in serializer_data:
             if serializer_data['action'] == 'accepted':
                 message = {
