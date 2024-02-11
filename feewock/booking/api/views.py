@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.db.models import Q
 from chat.utiles import notify_employee , notify_user
 from user_auth.models import UserModel
-
+from rest_framework.generics import RetrieveUpdateDestroyAPIView
 
 @permission_classes([IsAuthenticated])
 class appointment(ListCreateAPIView):
@@ -85,3 +85,9 @@ class EmployeeActionList(ListCreateAPIView):
         notify_user(room_name , message)
         return appointment
 
+
+
+@permission_classes([IsAuthenticated])
+class IndivualAction(RetrieveUpdateDestroyAPIView):
+    serializer_class = EmployeeActionSerializerAccept
+    queryset = EmployeeAction.objects.all()

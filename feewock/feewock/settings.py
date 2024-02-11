@@ -68,7 +68,9 @@ INSTALLED_APPS = [
     'chat',
     'post',
     'call',
-    'booking'
+    'booking',
+    'payment',
+    'reviews',
 ]
 
 
@@ -292,3 +294,5 @@ EMAIL_PORT=587
 EMAIL_HOST_USER= os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD= os.environ.get('EMAIL_PASSWORD')
 EMAIL_USE_TLS=True
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')

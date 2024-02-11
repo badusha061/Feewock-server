@@ -31,7 +31,7 @@ class EmployeeActionSerializer(ModelSerializer):
 
 class EmployeeActionSerializerAccept(ModelSerializer):
     comment = serializers.CharField(required=False)
-    appointment = AppointmentSerializerEmployee()
+    appointment = AppointmentSerializer()
     class Meta:
         model = EmployeeAction
         fields = ['id','appointment', 'action','comment']

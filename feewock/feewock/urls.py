@@ -23,7 +23,10 @@ urlpatterns = [
     path('post/',include('post.api.urls')),
     path('banner/',include('banner.api.urls')),
     path('booking/', include('booking.api.urls')),
+    path('payment/', include('payment.api.urls')),
+    # path('reviews/', include('reviews.api.urls'))
 ]
+
 
 urlpatterns += router.urls
 
