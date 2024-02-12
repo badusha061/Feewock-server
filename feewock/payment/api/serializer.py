@@ -1,6 +1,6 @@
 from rest_framework import serializers
 import datetime
-from payment.models import ServiceOrder
+from payment.models import ServiceOrderPayment
 
 def check_expiry_month(value):
     if not 1 <= int(value) <= 12:
@@ -44,5 +44,5 @@ class CardInformationSerializer(serializers.Serializer):
 
 class ServiceOrderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ServiceOrder
+        model = ServiceOrderPayment
         fields = ['id', 'appointment', 'method', 'status' , 'transaction_id' , 'paid_at' , 'created_at']

@@ -16,7 +16,7 @@ class PaymentStatus(models.TextChoices):
     FAILED = 'FL' , 'Failed'
 
 
-class ServiceOrder(models.Model):
+class ServiceOrderPayment(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE)
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
     method = models.CharField(max_length = 2 , choices = PaymentMethod.choices , default = PaymentMethod.STRIPE)
