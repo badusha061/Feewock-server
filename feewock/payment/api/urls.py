@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import PaymentAPI
+from .views import *
 
 urlpatterns = [  
-    path('strip', PaymentAPI.as_view(), name='payment'),    
+    path('create-checkout-session/<int:pk>/', StripeCheckoutView.as_view()),
 ]
+
