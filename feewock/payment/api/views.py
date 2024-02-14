@@ -1,4 +1,4 @@
-from .serializer import CardInformationSerializer , ServiceOrderSerializer
+from .serializer import CardInformationSerializer 
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -22,11 +22,12 @@ class StripeCheckoutView(APIView):
     def post(self, request ,*args, **kwargs):
         appoitment_instane = Appointment.objects.get(id = self.kwargs['pk'])
         try:
+            app_id = self.kwargs['pk']
             customer = stripe.Customer.create(
                 name=appoitment_instane.user.first_name,
                 address={
                     'line1': appoitment_instane.user.location,
-                    'city': 'Kanoor',
+                    'city':  appoitment_instane.user.location,
                     'postal_code': '123232',
                     'country': 'DK',
                 }
@@ -46,7 +47,7 @@ class StripeCheckoutView(APIView):
                     },
                 ],  
                 mode='payment',
-                success_url=settings.SITE_URL + '/?success=true&session_id={CHECKOUT_SESSION_ID}',
+                success_url=settings.SITE_URL + f'/?success=true&session_id={{CHECKOUT_SESSION_ID}}&appointment_id={app_id}',
                 cancel_url=settings.SITE_URL + '/?canceled=true',
                 customer=customer.id
             )

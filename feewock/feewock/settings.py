@@ -71,6 +71,9 @@ INSTALLED_APPS = [
     'booking',
     'payment',
     'reviews',
+    "django_celery_results",
+    "django_celery_beat",
+
 ]
 
 
@@ -297,3 +300,25 @@ EMAIL_HOST_PASSWORD= os.environ.get('EMAIL_PASSWORD')
 EMAIL_USE_TLS=True
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
+
+
+#celery basic set up 
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/'
+CELERY_TIMEZONE = 'Asia/Karachi' 
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+
+#reids caches set up
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": f"redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}

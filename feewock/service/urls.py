@@ -8,6 +8,7 @@ urlpatterns = [
 
     # Sub Service
     path('subservice', ListSubService.as_view(), name='listingsub_serlizer'),
+    path('subserviceemployee', ListSubServiceEmployee.as_view(), name='listingsub_serlizer'),
     path('createsubservice', CreateSubService.as_view(), name='creatingsub-service'), 
     path('updatesubervice/<int:pk>/', UpdateSubservice.as_view(), name='updatesub_serlizer'),
 

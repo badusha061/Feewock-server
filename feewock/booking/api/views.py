@@ -1,13 +1,18 @@
-from .serializer import AppointmentSerializer , EmployeeActionSerializer , AppointmentSerializerUser , AppointmentSerializerEmployee, EmployeeActionSerializerAccept
+from .serializer import AppointmentSerializer , EmployeeActionSerializer , AppointmentSerializerUser , AppointmentSerializerEmployee, EmployeeActionSerializerAccept , AppointmentSerializerAdmin
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import ListCreateAPIView 
 from booking.models import Appointment , EmployeeAction
 from  rest_framework.decorators import permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated , IsAdminUser
 from django.db.models import Q
 from chat.utiles import notify_employee , notify_user
 from user_auth.models import UserModel
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
+from rest_framework.views import APIView
+from booking.models import PaymentMethod , PaymentStatus
+from rest_framework.response import Response
+from rest_framework import status
+
 
 @permission_classes([IsAuthenticated])
 class appointment(ListCreateAPIView):
@@ -91,3 +96,42 @@ class EmployeeActionList(ListCreateAPIView):
 class IndivualAction(RetrieveUpdateDestroyAPIView):
     serializer_class = EmployeeActionSerializerAccept
     queryset = EmployeeAction.objects.all()
+
+
+
+class Strip_Payment(APIView):
+    def post(self , request , *args, **kwargs):
+        try:
+            appointment_instance = Appointment.objects.get(id = self.kwargs['pk'])
+            appointment_instance.payment_status =  PaymentStatus.PAID
+            appointment_instance.payment_method = PaymentMethod.STRIPE
+            appointment_instance.marks_as_paid()
+            appointment_instance.save()
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+
+class CashOnDelivery(APIView):
+    def post(self , request , *args, **kwargs):
+        try:
+            appointment_instance = Appointment.objects.get(id = self.kwargs['pk'])
+            appointment_instance.payment_status =  PaymentStatus.PENDING
+            appointment_instance.payment_method = PaymentMethod.COD
+            appointment_instance.save()
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+
+@permission_classes([IsAdminUser])
+class AdminOrderList(ListCreateAPIView):
+    serializer_class = AppointmentSerializerAdmin
+    queryset = Appointment.objects.all()
+
+
+
+@permission_classes([IsAdminUser])
+class AdminOrderListIndivual(RetrieveUpdateDestroyAPIView):
+    serializer_class = AppointmentSerializerAdmin
+    queryset = Appointment.objects.all()

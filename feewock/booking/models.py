@@ -1,7 +1,20 @@
 from django.db import models
 from employee_auth.models import Employees
 from user_auth.models import UserModel
+from django.utils import timezone
+
 # Create your models here.
+
+class PaymentMethod(models.TextChoices):
+    STRIPE = 'ST' , 'Stripe'
+    COD = 'CO' , 'Cash on Delivery'
+    PENDING = 'PD', 'Pending'
+
+class PaymentStatus(models.TextChoices):
+    PENDING = 'PD', 'Pending'
+    PAID = 'PY' , 'Paid'
+    FAILED = 'FL' , 'Failed'
+
 
 class Appointment(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='appointments', null = True)
@@ -12,6 +25,16 @@ class Appointment(models.Model):
     service_amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField()
     service_time = models.TimeField()
+    payment_method = models.CharField(max_length = 2 , choices = PaymentMethod.choices , default = PaymentMethod.PENDING , null=True)
+    payment_status = models.CharField(max_length = 2 , choices = PaymentStatus.choices , default = PaymentStatus.PENDING , null = True)
+    paid_at = models.DateTimeField(null = True)
+    
+    def marks_as_paid(self):
+        self.status = PaymentStatus.PAID
+        self.paid_at = timezone.now()
+        self.save()
+
+
     def __str__(self) -> str:
         return self.name
     

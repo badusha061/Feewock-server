@@ -3,7 +3,7 @@ from booking.models import Appointment , EmployeeAction
 from rest_framework import serializers
 from employee_auth.serializer import EmployeeSerializer
 from employee_auth.models import Employees
-
+from user_auth.api.serializer import UserIndvualSerializers
 
 class AppointmentSerializer(ModelSerializer):
     employee = EmployeeSerializer()
@@ -11,6 +11,12 @@ class AppointmentSerializer(ModelSerializer):
         model = Appointment
         fields = ['id','employee','name' ,'user', 'phone_number' , 'location' , 'service_amount','date','service_time']
 
+
+class AppointmentSerializerUserBook(ModelSerializer):
+    employee = EmployeeSerializer()
+    class Meta:
+        model = Appointment
+        fields = ['id','employee','name' ,'user', 'phone_number' , 'location' , 'service_amount','date','service_time','payment_method','payment_status','paid_at']
 
 
 class AppointmentSerializerEmployee(ModelSerializer):
@@ -38,7 +44,15 @@ class EmployeeActionSerializerAccept(ModelSerializer):
 
 
 class AppointmentSerializerUser(ModelSerializer):
-    appointment  = AppointmentSerializer()
+    appointment  = AppointmentSerializerUserBook()
     class Meta:
         model = EmployeeAction
         fields = ['id','appointment', 'action','comment']
+
+
+class AppointmentSerializerAdmin(ModelSerializer):
+    employee = EmployeeSerializer()
+    user = UserIndvualSerializers()
+    class Meta:
+        model = Appointment
+        fields = ['id','employee','name' ,'user', 'phone_number' , 'location' , 'service_amount','date','service_time','payment_method','payment_status','paid_at']

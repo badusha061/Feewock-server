@@ -24,7 +24,8 @@ urlpatterns = [
     path('banner/',include('banner.api.urls')),
     path('booking/', include('booking.api.urls')),
     path('payment/', include('payment.api.urls')),
-    # path('reviews/', include('reviews.api.urls'))
+    path('reviews/', include('reviews.api.urls')),
+    
 ]
 
 

@@ -28,6 +28,10 @@ class ListSubService(ListCreateAPIView):
     serializer_class = SubServiceSerializerFetch
 
 
+class ListSubServiceEmployee(ListCreateAPIView):  
+    queryset =SubService.objects.all()
+    serializer_class = SubServiceSerializerFetch
+
 @permission_classes([IsAdminUser])
 class CreateSubService(ListCreateAPIView):
     parser_classes = [MultiPartParser , FormParser]
