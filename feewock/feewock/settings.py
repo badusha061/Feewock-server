@@ -73,7 +73,7 @@ INSTALLED_APPS = [
     'reviews',
     "django_celery_results",
     "django_celery_beat",
-
+    "celery",
 ]
 
 
@@ -307,10 +307,10 @@ CELERY_BROKER_URL = 'redis://127.0.0.1:6379/'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/'
+result_backend = 'redis://localhost:6379/0'
 CELERY_TIMEZONE = 'Asia/Karachi' 
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
-
+CELERY_ALWAYS_EAGER = False
 
 #reids caches set up
 CACHES = {

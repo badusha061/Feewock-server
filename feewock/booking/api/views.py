@@ -12,6 +12,8 @@ from rest_framework.views import APIView
 from booking.models import PaymentMethod , PaymentStatus
 from rest_framework.response import Response
 from rest_framework import status
+# from booking.signals import send_payment_email_task
+from booking.task import send_email_employee , send_email_user
 
 
 @permission_classes([IsAuthenticated])
@@ -99,30 +101,70 @@ class IndivualAction(RetrieveUpdateDestroyAPIView):
 
 
 
+
 class Strip_Payment(APIView):
     def post(self , request , *args, **kwargs):
         try:
+            appointment_id = self.kwargs['pk']
             appointment_instance = Appointment.objects.get(id = self.kwargs['pk'])
             appointment_instance.payment_status =  PaymentStatus.PAID
             appointment_instance.payment_method = PaymentMethod.STRIPE
             appointment_instance.marks_as_paid()
             appointment_instance.save()
+            print('this is saved')
+            print('this is saved')
+            print('this is saved')
+            print('this is saved')
+            print('this is saved')
+            print('this is saved')
+
+            # send_payment_email_task.send(sender = Appointment , instance = appointment_id , created = True )
+            send_email_user.delay(appointment_id)
+            send_email_employee.delay(appointment_id)
+            print('after come')
+            print('after come')
+            print('after come')
+            print('after come')
+            print('after come')
+            print('after come')
+            print('after come')
+            print('after come')
+            print('after come')
+            print('after come')
+            print('after come')
+
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            print(e,'the error is hte')
+            print(e,'the error is hte')
+            print(e,'the error is hte')
+            print(e,'the error is hte')
+            print(e,'the error is hte')
+            print(e,'the error is hte')
+            print(e,'the error is hte')
+            print(e,'the error is hte')
+
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+
+
+class CashOnDelivery(APIView):
+    def post(self , request , *args, **kwargs):
+        try:
+            appointment_id = self.kwargs['pk']
+            appointment_instance = Appointment.objects.get(id = self.kwargs['pk'])
+            appointment_instance.payment_status =  PaymentStatus.PENDING
+            appointment_instance.payment_method = PaymentMethod.COD
+            appointment_instance.save()
+            # send_payment_email_task.send(sender = Appointment , instance = appointment_id , created = True )
+            send_email_user.delay(appointment_id)
+            send_email_employee.delay(appointment_id)
             return Response(status=status.HTTP_200_OK)
         except Exception as e:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
 
-class CashOnDelivery(APIView):
-    def post(self , request , *args, **kwargs):
-        try:
-            appointment_instance = Appointment.objects.get(id = self.kwargs['pk'])
-            appointment_instance.payment_status =  PaymentStatus.PENDING
-            appointment_instance.payment_method = PaymentMethod.COD
-            appointment_instance.save()
-            return Response(status=status.HTTP_200_OK)
-        except Exception as e:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        
+
 
 @permission_classes([IsAdminUser])
 class AdminOrderList(ListCreateAPIView):
