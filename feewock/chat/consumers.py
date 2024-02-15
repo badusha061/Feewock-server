@@ -7,11 +7,12 @@ from channels.db import database_sync_to_async
 class TextConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
+
         sender_id, recipient_id = self.room_name.split('_')
- 
+
 
         #creating room 
-        self.room_group_name = f"chat_{sender_id}_{recipient_id}"
+        self.room_group_name = f"chat_{min(sender_id, recipient_id)}_{max(sender_id, recipient_id)}"
 
 
         #join the room
@@ -27,12 +28,13 @@ class TextConsumer(AsyncWebsocketConsumer):
             self.room_group_name,
             self.channel_name
         )
-        print('disocnnected',self.channel_layer)
         await super().disconnect(code)
 
 
 
     async def receive(self, text_data):
+
+
         # Receive message from WebSocket
         text_data_json = json.loads(text_data)
         text = text_data_json['text']
@@ -42,35 +44,32 @@ class TextConsumer(AsyncWebsocketConsumer):
 
         if chat_message and not chat_message.is_read:
             chat_message.mark_as_read()
+
         messages = await self.get_messages(sender , recipient_id)
         # Send message to room group
         await(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message': messages,
+                'messages': messages,
                 'sender': sender,
+                'message':text
             }
         )
 
-        await self.send(text_data=json.dumps({'message': 'Message received successfully!'}))
+      
     
     async def chat_message(self, event):
         # Receive message from room group
-        text = event['message']
+        messages = event['messages']
         sender = event['sender']
-        print('the text message is the ', text)
-        print('the text message is the ', text)
-        print('the text message is the ', text)
-        print('the text message is the ', text)
-        print('the text message is the ', text)
-        print('the text message is the ', text)
-        print('the text message is the ', text)
+        message = event['message']
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'text': text,
-            'sender': sender
+            'messages': messages,
+            'sender': sender,
+            'message':message,
         }))
 
 
@@ -91,6 +90,9 @@ class TextConsumer(AsyncWebsocketConsumer):
             messages=ChatSerializer(instance).data
 
         return messages
+
+
+
 
 
 class NoficationEmployee(AsyncWebsocketConsumer):
@@ -119,6 +121,8 @@ class NoficationEmployee(AsyncWebsocketConsumer):
         message = json.loads(event['message'])
         # Send message to WebSocket
         await self.send(text_data=json.dumps(message))
+
+
 
 
 

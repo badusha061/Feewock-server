@@ -13,7 +13,8 @@ from booking.models import PaymentMethod , PaymentStatus
 from rest_framework.response import Response
 from rest_framework import status
 # from booking.signals import send_payment_email_task
-from booking.task import send_email_employee , send_email_user
+from booking.task import send_email_employee , send_email_user 
+from django.http import HttpResponse
 
 
 @permission_classes([IsAuthenticated])
@@ -111,39 +112,11 @@ class Strip_Payment(APIView):
             appointment_instance.payment_method = PaymentMethod.STRIPE
             appointment_instance.marks_as_paid()
             appointment_instance.save()
-            print('this is saved')
-            print('this is saved')
-            print('this is saved')
-            print('this is saved')
-            print('this is saved')
-            print('this is saved')
-
             # send_payment_email_task.send(sender = Appointment , instance = appointment_id , created = True )
-            send_email_user.delay(appointment_id)
-            send_email_employee.delay(appointment_id)
-            print('after come')
-            print('after come')
-            print('after come')
-            print('after come')
-            print('after come')
-            print('after come')
-            print('after come')
-            print('after come')
-            print('after come')
-            print('after come')
-            print('after come')
-
+            send_email_user.delay(appointment_instance.id)
+            send_email_employee.delay(appointment_instance.id)
             return Response(status=status.HTTP_200_OK)
         except Exception as e:
-            print(e,'the error is hte')
-            print(e,'the error is hte')
-            print(e,'the error is hte')
-            print(e,'the error is hte')
-            print(e,'the error is hte')
-            print(e,'the error is hte')
-            print(e,'the error is hte')
-            print(e,'the error is hte')
-
             return Response(status=status.HTTP_400_BAD_REQUEST)
         
 
@@ -177,3 +150,5 @@ class AdminOrderList(ListCreateAPIView):
 class AdminOrderListIndivual(RetrieveUpdateDestroyAPIView):
     serializer_class = AppointmentSerializerAdmin
     queryset = Appointment.objects.all()
+
+

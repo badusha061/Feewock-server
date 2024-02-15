@@ -15,7 +15,8 @@ urlpatterns = [
 
     #admin side listing
     path('adminorderlist', AdminOrderList.as_view(), name='admin-listing' ),
-    path('adminindivualorderlist/<int:pk>/', AdminOrderListIndivual.as_view(), name='admin-listing' )
+    path('adminindivualorderlist/<int:pk>/', AdminOrderListIndivual.as_view(), name='admin-listing' ),
+
 
 
 ]

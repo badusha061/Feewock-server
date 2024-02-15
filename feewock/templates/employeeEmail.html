@@ -84,7 +84,11 @@
                                                                     <li>Service Amount of guests: <strong> {{service_amount}} </strong></li>
                                                                     <li>Service Date of guests: <strong> {{service_date}} </strong></li>
                                                                     <li>Service Time of guests: <strong> {{service_time}} </strong></li>
-                                                                    <li>Service payment Method of guests: <strong> {{service_method}} </strong></li>
+                                                                {% if service_method == "ST" %}
+                                                                    <li>Service payment Method of guests: <strong> Stripe </strong></li>
+                                                                {% else %}
+                                                                    <li>Service payment Method of guests: <strong> Cash on Delivery </strong></li>
+                                                                {% endif  %}
                                                                 </ul>
                                                                 <p>Feewock</p>
                                                                 <p>Feewock Bookings Team</p>

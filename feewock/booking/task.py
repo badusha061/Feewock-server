@@ -6,13 +6,6 @@ from  django.conf import settings
 
 
 
-@shared_task
-def test_task():
-    print("Your celery is working")
-    print("Your celery is working")
-    print("Your celery is working")
-    print("Your celery is working")
-    print("Your celery is working")
 
   
 
@@ -23,44 +16,10 @@ def test_task():
 def send_email_user(self , appointment_id):
     from booking.models import Appointment
     from user_auth.models import UserModel
-    print('calling user email')
-    print('calling user email')
-    print('calling user email')
-    print('calling user email')
-    print('calling user email')
-    print('calling user email')
-
     appointment_instance = Appointment.objects.get(id = appointment_id)
-    print('the appoitment instance is the ',appointment_instance)
-    print('the appoitment instance is the ',appointment_instance)
-    print('the appoitment instance is the ',appointment_instance)
-    print('the appoitment instance is the ',appointment_instance)
-    print('the appoitment instance is the ',appointment_instance)
-
-    user_intance = UserModel.objects.get(id = appointment_instance.user)
-    print('the user instance is the ',user_intance)
-    print('the user instance is the ',user_intance)
-    print('the user instance is the ',user_intance)
-    print('the user instance is the ',user_intance)
-    print('the user instance is the ',user_intance)
-    print('the user instance is the ',user_intance)
-    print('the user instance is the ',user_intance)
-    print('the user instance is the ',user_intance)
-    print('the user instance is the ',user_intance)
-    print('the user instance is the ',user_intance)
-
+    user_intance = UserModel.objects.get(email = appointment_instance.user)
     subject = 'PAYMENT RECEIVED'
     full_name = f'{user_intance.first_name} {user_intance.last_name}'
-    print('the user full name is the',full_name)
-    print('the user full name is the',full_name)
-    print('the user full name is the',full_name)
-    print('the user full name is the',full_name)
-    print('the user full name is the',full_name)
-    print('the user full name is the',full_name)
-    print('the user full name is the',full_name)
-    print('the user full name is the',full_name)
-    print('the user full name is the',full_name)
-
     service_amount = appointment_instance.service_amount
     service_date = appointment_instance.date
     service_method = appointment_instance.payment_method
@@ -90,42 +49,8 @@ def send_email_user(self , appointment_id):
 def send_email_employee(self , appointment_id):
     from booking.models import Appointment
     from employee_auth.models import Employees
-    print('the employeeeeeeeee is calling')
-    print('the employeeeeeeeee is calling')
-    print('the employeeeeeeeee is calling')
-    print('the employeeeeeeeee is calling')
-    print('the employeeeeeeeee is calling')
-    print('the employeeeeeeeee is calling')
-    print('the employeeeeeeeee is calling')
-    print('the employeeeeeeeee is calling')
-    print('the employeeeeeeeee is calling')
-    print('the employeeeeeeeee is calling')
-    print('the employeeeeeeeee is calling')
-    print('the employeeeeeeeee is calling')
-    print('the employeeeeeeeee is calling')
-
     appointment_instance = Appointment.objects.get(id = appointment_id)
-    employee_instance = Employees.objects.get(id = appointment_instance.employee)
-    print('the appoinment intance is hte',appointment_instance)
-    print('the appoinment intance is hte',appointment_instance)
-    print('the appoinment intance is hte',appointment_instance)
-    print('the appoinment intance is hte',appointment_instance)
-    print('the appoinment intance is hte',appointment_instance)
-    print('the appoinment intance is hte',appointment_instance)
-    print('the appoinment intance is hte',appointment_instance)
-    print('the appoinment intance is hte',appointment_instance)
-    print('the appoinment intance is hte',appointment_instance)
-
-    print('the employeee instance is hte', employee_instance)
-    print('the employeee instance is hte', employee_instance)
-    print('the employeee instance is hte', employee_instance)
-    print('the employeee instance is hte', employee_instance)
-    print('the employeee instance is hte', employee_instance)
-    print('the employeee instance is hte', employee_instance)
-    print('the employeee instance is hte', employee_instance)
-    print('the employeee instance is hte', employee_instance)
-    print('the employeee instance is hte', employee_instance)
-
+    employee_instance = Employees.objects.get(username = appointment_instance.employee)
     username = employee_instance.username
     name = appointment_instance.name
     number = appointment_instance.phone_number

@@ -5,6 +5,8 @@
 	<title></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+
 		* {
 			box-sizing: border-box;
 		}
@@ -80,7 +82,9 @@
 				max-height: none !important;
 			}
 		}
-	</style>
+
+    </style>
+	
 </head>
 
 <body style="background-color: #f9f9f9; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
@@ -123,9 +127,7 @@
 													<table class="image_block block-2" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
 														<tr>
 															<td class="pad" style="width:100%;">
-																<div class="alignment" align="center" style="line-height:10px">
-																	<div style="max-width: 93px;"><img src="https://d1oco4z2z1fhwp.cloudfront.net/templates/default/4971/check-icon.png" style="display: block; height: auto; border: 0; width: 100%;" width="93" alt="Check Icon" title="Check Icon"></div>
-																</div>
+                                                                <h1> FEEWOCK </h1>
 															</td>
 														</tr>
 													</table>
@@ -161,8 +163,13 @@
 															<td class="pad" style="padding-left:30px;padding-right:30px;">
 																<div style="color:#2f2f2f;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;line-height:150%;text-align:center;mso-line-height-alt:24px;">
 																	<p style="margin: 0; word-break: break-word;"><span>Thank you for your payment of <strong><span>$ {{service_amount}} </span></strong> <strong><span></span></strong></span></p>
-																	<p style="margin: 0; word-break: break-word;"><span>using <strong><span>Stripe Account </span></strong></span></p>
-																</div>
+                                                                {% if service_method == "ST" %}
+																	
+                                                                    <p style="margin: 0; word-break: break-word;"><span>using <strong><span>Stripe Account </span></strong></span></p>
+																{% else %}
+                                                                    <p style="margin: 0; word-break: break-word;"><span>using <strong><span> Cash on delivery </span></strong></span></p>
+                                                                {% endif  %}
+                                                                </div>
 															</td>
 														</tr>
 													</table>
@@ -237,7 +244,12 @@
 																<div style="color:#2f2f2f;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:16px;line-height:200%;text-align:left;mso-line-height-alt:32px;">
 																	<p style="margin: 0; word-break: break-word;"><span>${{service_amount}} </span></p>
 																	<p style="margin: 0; word-break: break-word;"><span>{{service_date}}</span></p>
-																	<p style="margin: 0; word-break: break-word;">{{service_method}}</p>
+                                                                {% if service_method == "ST" %}
+																	<p style="margin: 0; word-break: break-word;"> Stripe </p>
+                                                                {% else %}
+																	<p style="margin: 0; word-break: break-word;"> Cash on delivery </p>
+                                                                {% endif %}
+
 																</div>
 															</td>
 														</tr>
