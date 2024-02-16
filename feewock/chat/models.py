@@ -1,3 +1,4 @@
+from booking.models import Appointment , EmployeeAction
 from django.db import models
 from user_auth.models import UserModel
 # Create your models here.
@@ -17,3 +18,18 @@ class Chat(models.Model):
     
 
 
+class EmployeeNotification(models.Model):
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.appointment.employee.username
+
+
+
+class UserNotification(models.Model):
+    action = models.ForeignKey(EmployeeAction, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self) -> str:
+        return self.action.action
+   

@@ -1,4 +1,4 @@
-from .serializer import AppointmentSerializer , EmployeeActionSerializer , AppointmentSerializerUser , AppointmentSerializerEmployee, EmployeeActionSerializerAccept , AppointmentSerializerAdmin
+from .serializer import *
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import ListCreateAPIView 
 from booking.models import Appointment , EmployeeAction
@@ -15,6 +15,7 @@ from rest_framework import status
 # from booking.signals import send_payment_email_task
 from booking.task import send_email_employee , send_email_user 
 from django.http import HttpResponse
+from chat.models import UserNotification , EmployeeNotification
 
 
 @permission_classes([IsAuthenticated])
@@ -152,3 +153,58 @@ class AdminOrderListIndivual(RetrieveUpdateDestroyAPIView):
     queryset = Appointment.objects.all()
 
 
+
+@permission_classes([IsAuthenticated])
+class UserNotificationList(APIView):
+    serializer_class = UserNotificationSerializer
+    def get(self , request , *args, **kwargs):
+        try:
+            user_id = self.kwargs['pk']
+            instance = UserModel.objects.get(id = user_id)
+            notification_data = UserNotification.objects.filter(action__appointment__user = instance)
+            print(notification_data)
+            serializer = self.serializer_class(notification_data, many = True)
+            return Response({"data":serializer.data })
+        except Exception as e:
+            return Response({"error":e})
+        
+
+
+@permission_classes([IsAuthenticated])
+class EmployeeNotificationList(APIView):
+    serializer_class = EmployeeNotificationSerializer
+    def get(self , request , *args, **kwargs):
+        try:
+            employee_id = self.kwargs['pk']
+            instance = Employees.objects.get(id = employee_id)
+            notification_data = EmployeeNotification.objects.filter(appointment__employee = instance)
+            print(notification_data)
+            serializer = self.serializer_class(notification_data, many = True)
+            return Response({"data":serializer.data })
+        except Exception as e:
+            return Response({"error":e})
+        
+
+@permission_classes([IsAuthenticated])
+class DeleteUserNotification(APIView):
+    def delete(self , request , *args, **kwargs):
+        try:
+            user_id = self.kwargs['pk']
+            instance = UserModel.objects.get(id = user_id)
+            UserNotification.objects.filter(action__appointment__user = instance).delete()
+            return Response({"message":"Succesfully Deleted"})
+        except Exception as e:
+            return Response({"error":e})
+        
+
+
+@permission_classes([IsAuthenticated])
+class DeleteEmployeeNotification(APIView):
+    def delete(self , request , *args, **kwargs):
+        try:
+            employee_id = self.kwargs['pk']
+            instance = Employees.objects.get(id = employee_id)
+            EmployeeNotification.objects.filter(appointment__employee = instance).delete()
+            return Response({"message":"Succesfully Deleted"})
+        except Exception as e:
+            return Response({"error":e})

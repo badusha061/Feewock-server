@@ -4,6 +4,7 @@ from rest_framework import serializers
 from employee_auth.serializer import EmployeeSerializer
 from employee_auth.models import Employees
 from user_auth.api.serializer import UserIndvualSerializers
+from chat.models import UserNotification , EmployeeNotification
 
 class AppointmentSerializer(ModelSerializer):
     employee = EmployeeSerializer()
@@ -56,3 +57,21 @@ class AppointmentSerializerAdmin(ModelSerializer):
     class Meta:
         model = Appointment
         fields = ['id','employee','name' ,'user', 'phone_number' , 'location' , 'service_amount','date','service_time','payment_method','payment_status','paid_at']
+
+
+
+
+class UserNotificationSerializer(ModelSerializer):
+    action = EmployeeActionSerializerAccept()
+    class Meta:
+        model = UserNotification
+        fields = ['id','action','created_at']
+
+
+
+
+class EmployeeNotificationSerializer(ModelSerializer):
+    appointment = AppointmentSerializer()
+    class Meta:
+        model = EmployeeNotification
+        fields = ['id','appointment','created_at']

@@ -18,8 +18,12 @@ def distance(user_latitude, user_longitude, employee_latitude, employee_longitud
     a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
     c = 2 * asin(sqrt(a)) 
     r = 6371 
-    print('the c and r ',c * r)
-    return c * r
+    max_allowed_distance = 30.0
+    result = c * r
+    if result < max_allowed_distance:
+        return result
+    else:
+        return False
 
 
 class ListEmployees(ListAPIView):
@@ -38,15 +42,22 @@ class ListEmployees(ListAPIView):
                 employee_latitude = emp.latitude
                 employee_longitude = emp.longitude
                 difference_betweeen = distance(user_latitude,user_longitude,employee_latitude,employee_longitude)
-                employee_distance.append({
-                     'employee_id':emp.id,
-                     'distance_difference':difference_betweeen
-                })
+                if difference_betweeen != False:
+                    employee_distance.append({
+                        'employee_id':emp.id,
+                        'distance_difference':difference_betweeen
+                    })
+            print(employee_distance)
             sorted_employee_distance = sorted(employee_distance, key=lambda x: x['distance_difference'])
             sorted_ids = [ item['employee_id'] for item in  sorted_employee_distance]
             sorted_employee = Employees.objects.filter(id__in = sorted_ids)
           
             employee_dict = {employee.id: employee for employee in sorted_employee}
             ordered_employees = [employee_dict[employee_id] for employee_id in sorted_ids]
+            print(ordered_employees)
+            print(ordered_employees)
+            print(ordered_employees)
+            print(ordered_employees)
+            print(ordered_employees)
 
             return ordered_employees
