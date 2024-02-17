@@ -45,6 +45,11 @@ class UpdateSubservice(RetrieveUpdateDestroyAPIView):
     serializer_class = SubServiceSerializer
 
 
+class UpdateSubserviceUser(RetrieveUpdateDestroyAPIView):
+    queryset = SubService.objects.all()
+    serializer_class = SubServiceSerializer
+
+
 class Postions(ListCreateAPIView):
     queryset =EmployeePostion.objects.all()
     serializer_class = EmployeePostionsSubService

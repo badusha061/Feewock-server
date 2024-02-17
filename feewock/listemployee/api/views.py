@@ -20,10 +20,11 @@ def distance(user_latitude, user_longitude, employee_latitude, employee_longitud
     r = 6371 
     max_allowed_distance = 30.0
     result = c * r
-    if result < max_allowed_distance:
-        return result
-    else:
-        return False
+    return result
+    # if result < max_allowed_distance:
+    #     return result
+    # else:
+    #     return False
 
 
 class ListEmployees(ListAPIView):
@@ -47,17 +48,10 @@ class ListEmployees(ListAPIView):
                         'employee_id':emp.id,
                         'distance_difference':difference_betweeen
                     })
-            print(employee_distance)
             sorted_employee_distance = sorted(employee_distance, key=lambda x: x['distance_difference'])
             sorted_ids = [ item['employee_id'] for item in  sorted_employee_distance]
             sorted_employee = Employees.objects.filter(id__in = sorted_ids)
           
             employee_dict = {employee.id: employee for employee in sorted_employee}
             ordered_employees = [employee_dict[employee_id] for employee_id in sorted_ids]
-            print(ordered_employees)
-            print(ordered_employees)
-            print(ordered_employees)
-            print(ordered_employees)
-            print(ordered_employees)
-
             return ordered_employees
