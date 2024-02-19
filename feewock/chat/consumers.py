@@ -119,8 +119,16 @@ class NoficationEmployee(AsyncWebsocketConsumer):
 
     async def send_notification(self, event):
         message = json.loads(event['message'])
+        count_number = json.loads(event['count_number'])
+        print(message)
+        print(count_number)
         # Send message to WebSocket
-        await self.send(text_data=json.dumps(message))
+        messages = {
+            "message":message,
+            "count_number":count_number
+        }
+        print('the message is the',count_number)
+        await self.send(text_data=json.dumps(messages))
 
 
 
@@ -150,5 +158,10 @@ class NoficationUser(AsyncWebsocketConsumer):
 
     async def notificationuser(self, event):
         message = json.loads(event['message'])
+        count_number = json.loads(event['count_number'])
+        messages = {
+            "message":message,
+            "count_number":count_number
+        }
         # Send message to WebSocket
-        await self.send(text_data=json.dumps(message))
+        await self.send(text_data=json.dumps(messages))

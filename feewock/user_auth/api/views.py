@@ -15,6 +15,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
+from chat.models import UserNotification
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -85,3 +86,15 @@ class UserIndivualView(RetrieveUpdateDestroyAPIView):
 class UserIndivualImage(RetrieveUpdateDestroyAPIView):
     serializer_class = UserIndvualImageSerializers
     queryset = UserModel.objects.all()
+
+
+
+@permission_classes([IsAuthenticated])
+class UserNotificationCount(APIView):
+    def get(self , request , *args, **kwargs):
+        try:
+            user_id = self.kwargs['pk']
+            count_result = UserNotification.objects.filter(action__appointment__user = user_id).count()
+            return Response(data=count_result , status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error":e})

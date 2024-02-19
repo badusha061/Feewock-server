@@ -32,7 +32,15 @@ class appointment(ListCreateAPIView):
             'message':'New appointment created.'
         }
         employee_id  = serializer_data['employee']
-        notify_employee(employee_id , message)
+        count_result = EmployeeNotification.objects.filter(appointment__employee =employee_id ).count()
+        total_count = int(count_result + 1)
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1',total_count)
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1',total_count)
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1',total_count)
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1',total_count)
+        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1',total_count)
+
+        notify_employee(employee_id , message,total_count)
         return appointment
 
 
@@ -92,7 +100,12 @@ class EmployeeActionList(ListCreateAPIView):
                     'message':'Your service is Rejected.'
                 }
         room_name = 'test'
-        notify_user(room_name , message)
+        apponitemnt_id = message['action_details']['appointment']
+        app_instance = Appointment.objects.get(id = apponitemnt_id)
+        user_instance = app_instance.user
+        count_number  = UserNotification.objects.filter(action__appointment__user = user_instance).count()
+        total_count = int(count_number + 1)
+        notify_user(room_name , message, total_count)
         return appointment
 
 
@@ -104,7 +117,6 @@ class IndivualAction(RetrieveUpdateDestroyAPIView):
 
 
 
-@permission_classes([IsAuthenticated])
 class Strip_Payment(APIView):
     def post(self , request , *args, **kwargs):
         try:
@@ -123,7 +135,6 @@ class Strip_Payment(APIView):
         
 
 
-@permission_classes([IsAuthenticated])
 class CashOnDelivery(APIView):
     def post(self , request , *args, **kwargs):
         try:
