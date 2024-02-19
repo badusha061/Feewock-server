@@ -17,7 +17,7 @@ class AppointmentSerializerUserBook(ModelSerializer):
     employee = EmployeeSerializer()
     class Meta:
         model = Appointment
-        fields = ['id','employee','name' ,'user', 'phone_number' , 'location' , 'service_amount','date','service_time','payment_method','payment_status','paid_at']
+        fields = ['id','employee','name' ,'user', 'phone_number' , 'location' , 'service_amount','date','service_time','payment_method','payment_status','paid_at','employee_status']
 
 
 class AppointmentSerializerEmployee(ModelSerializer):
@@ -56,7 +56,7 @@ class AppointmentSerializerAdmin(ModelSerializer):
     user = UserIndvualSerializers()
     class Meta:
         model = Appointment
-        fields = ['id','employee','name' ,'user', 'phone_number' , 'location' , 'service_amount','date','service_time','payment_method','payment_status','paid_at']
+        fields = ['id','employee','name' ,'user', 'phone_number' , 'location' , 'service_amount','date','service_time','payment_method','payment_status','paid_at','employee_status']
 
 
 

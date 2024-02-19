@@ -20,3 +20,11 @@ class ReviewsUserSide(APIView):
         employee_reviews =  EmployeeReviews.objects.filter(employee = self.kwargs['pk'])
         serializer = self.serializer_class(employee_reviews , many = True)
         return Response(data=serializer.data , status=status.HTTP_200_OK)
+    
+
+class AllReviewsList(APIView):
+    serializer_class = SerializerReviewsUserSide
+    def get(self ,request):
+        queryset = EmployeeReviews.objects.all()[:8]
+        serializer = self.serializer_class(queryset , many= True)
+        return Response(data=serializer.data , status= status.HTTP_200_OK)

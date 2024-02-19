@@ -15,6 +15,10 @@ class PaymentStatus(models.TextChoices):
     PAID = 'PY' , 'Paid'
     FAILED = 'FL' , 'Failed'
 
+class EmployeeStatus(models.TextChoices):
+        COMING = 'coming', 'Coming'
+        ON_THE_WAY = 'on_the_way', 'On the Way'
+        NEAREST = 'nearest', 'Nearest'
 
 class Appointment(models.Model):
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name='appointments', null = True)
@@ -28,7 +32,7 @@ class Appointment(models.Model):
     payment_method = models.CharField(max_length = 2 , choices = PaymentMethod.choices , default = PaymentMethod.PENDING , null=True)
     payment_status = models.CharField(max_length = 2 , choices = PaymentStatus.choices , default = PaymentStatus.PENDING , null = True)
     paid_at = models.DateTimeField(null = True)
-    
+    employee_status = models.CharField(max_length = 10 , choices = EmployeeStatus.choices , default = EmployeeStatus.COMING, null=True)
     def marks_as_paid(self):
         self.status = PaymentStatus.PAID
         self.paid_at = timezone.now()

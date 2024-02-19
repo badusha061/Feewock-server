@@ -1,7 +1,7 @@
 from .serializer import *
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import ListCreateAPIView 
-from booking.models import Appointment , EmployeeAction
+from booking.models import Appointment , EmployeeAction , EmployeeStatus
 from  rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated , IsAdminUser
 from django.db.models import Q
@@ -16,6 +16,7 @@ from rest_framework import status
 from booking.task import send_email_employee , send_email_user 
 from django.http import HttpResponse
 from chat.models import UserNotification , EmployeeNotification
+
 
 
 @permission_classes([IsAuthenticated])
@@ -103,7 +104,7 @@ class IndivualAction(RetrieveUpdateDestroyAPIView):
 
 
 
-
+@permission_classes([IsAuthenticated])
 class Strip_Payment(APIView):
     def post(self , request , *args, **kwargs):
         try:
@@ -122,6 +123,7 @@ class Strip_Payment(APIView):
         
 
 
+@permission_classes([IsAuthenticated])
 class CashOnDelivery(APIView):
     def post(self , request , *args, **kwargs):
         try:
@@ -206,5 +208,46 @@ class DeleteEmployeeNotification(APIView):
             instance = Employees.objects.get(id = employee_id)
             EmployeeNotification.objects.filter(appointment__employee = instance).delete()
             return Response({"message":"Succesfully Deleted"})
+        except Exception as e:
+            return Response({"error":e})
+        
+
+@permission_classes([IsAuthenticated])
+class EmployeeAppointmentList(APIView):
+    serializer_class = AppointmentSerializerAdmin
+    def get(self , request , *args, **kwargs):
+        try:
+            employee_id = self.kwargs['pk']
+            instance = Employees.objects.get(id = employee_id)
+            appointment_data = Appointment.objects.filter(employee = instance)
+            serializers = self.serializer_class(appointment_data ,many= True)
+            return Response(data=serializers.data , status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error":e})
+
+
+
+@permission_classes([IsAuthenticated])
+class EmployeeAppointmentListIndivual(RetrieveUpdateDestroyAPIView):
+    serializer_class = AppointmentSerializerAdmin
+    queryset = Appointment.objects.all()
+    
+
+class EmployeeStausUpdate(APIView):
+    def post(self , request , *args, **kwargs):
+        try:
+            app_id = self.kwargs['pk']
+            data = request.data.get('status')
+            appointment_data = Appointment.objects.get(id = app_id)
+            if data == 1:
+                appointment_data.employee_status = EmployeeStatus.COMING
+                appointment_data.save()
+            elif data == 2:
+                appointment_data.employee_status = EmployeeStatus.ON_THE_WAY
+                appointment_data.save()
+            elif data == 3:
+                appointment_data.employee_status = EmployeeStatus.NEAREST
+                appointment_data.save()
+            return Response( status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error":e})
