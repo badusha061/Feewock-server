@@ -3,7 +3,7 @@ from .views import ListPosts , ListPostIndivually ,LikePostDelete ,  UpdatePost 
 
 urlpatterns = [    
     #listing post in user side without permision 
-    path('list', ListPosts.as_view() , name='listing-post'),
+    path('list/', ListPosts.as_view() , name='listing-post'),
 
     #post listing and updating and delete in employee side
     path('list/<int:pk>/', ListPostIndivually.as_view() , name='listing-post'),
