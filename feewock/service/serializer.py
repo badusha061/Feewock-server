@@ -47,3 +47,10 @@ class FetchMainService(ModelSerializer):
     class Meta:
         model = MainService
         fields = ['name','subservice']
+
+
+
+class ServicePostList(ModelSerializer):
+    class Meta:
+        model = SubService
+        fields = ['id','name','mainservice','Image']

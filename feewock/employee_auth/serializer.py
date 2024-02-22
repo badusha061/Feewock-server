@@ -9,7 +9,7 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-from service.serializer import SubServiceSerializerFetch
+from service.serializer import *
 
 
 class EmployeeSerializer(ModelSerializer):
@@ -98,7 +98,20 @@ class EmployeeSerializer(ModelSerializer):
         message.send()
         return employee
 
+
 class EmployeesListSerlizer(ModelSerializer):
     class Meta:
         model = Employees
         fields = ['id','service','username','address']
+
+
+
+class EmployeePostSerlizer(ModelSerializer):
+    service = serializers.SerializerMethodField()
+    class Meta:
+        model = Employees
+        fields = ['id','service','username','images']
+    def get_service(self , obj):
+        service_id = obj.service
+        services = SubService.objects.filter(id__in = service_id)
+        return [{"id": service.id , "name":service.name } for service in services]

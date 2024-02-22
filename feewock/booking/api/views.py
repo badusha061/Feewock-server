@@ -34,12 +34,6 @@ class appointment(ListCreateAPIView):
         employee_id  = serializer_data['employee']
         count_result = EmployeeNotification.objects.filter(appointment__employee =employee_id ).count()
         total_count = int(count_result + 1)
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1',total_count)
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1',total_count)
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1',total_count)
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1',total_count)
-        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1',total_count)
-
         notify_employee(employee_id , message,total_count)
         return appointment
 
@@ -101,11 +95,15 @@ class EmployeeActionList(ListCreateAPIView):
                 }
         room_name = 'test'
         apponitemnt_id = message['action_details']['appointment']
+        print(message)
+  
         app_instance = Appointment.objects.get(id = apponitemnt_id)
         user_instance = app_instance.user
+        user = UserModel.objects.get(email = user_instance)
+        user_id = user.id
         count_number  = UserNotification.objects.filter(action__appointment__user = user_instance).count()
         total_count = int(count_number + 1)
-        notify_user(room_name , message, total_count)
+        notify_user(user_id , message, total_count)
         return appointment
 
 

@@ -11,7 +11,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'feewock.settings')
 websocket_urlpatterns = [
     re_path(r'^ws/chat/(?P<room_name>[\w_]+)/$', TextConsumer.as_asgi()),
     re_path(r'^ws/notification/(?P<employee_id>\w+)/$', NoficationEmployee.as_asgi()),
-    re_path(r'^ws/notificationuser/(?P<room_name>\w+)/$', NoficationUser.as_asgi()),
+    re_path(r'^ws/notificationuser/(?P<userId>\w+)/$', NoficationUser.as_asgi()),
 ]
 
 

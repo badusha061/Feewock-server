@@ -24,9 +24,9 @@ def notify_employee(employee_id , message,count_number):
     
 
 
-def notify_user(room_name , message, count_number):
+def notify_user(user_id , message, count_number):
     channel_layer = get_channel_layer()
-    room_group_name = f"notification_{room_name}"
+    room_group_name = f"user_{user_id}"
     message_text = json.dumps(message)
  
     count_number_text = json.dumps(count_number)
