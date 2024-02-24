@@ -113,6 +113,14 @@ CHANNEL_LAYERS = {
     },
 }
 
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [('redis://localhost:6379/1',)],
+#         },
+#     },
+# }
 
 
 TEMPLATES = [
@@ -259,7 +267,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:5173",
-    "http://127.0.0.1:8000"
+    "http://127.0.0.1:8001"
 ]
 
 
@@ -313,8 +321,10 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Asia/Karachi' 
 # CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 # CELERY_ALWAYS_EAGER = False
-
+CELERY_TASK_TRACK_STARTED = True
 CELERY_RESULT_BACKEND = 'django-db'
+CELERY_TRACK_STARTED = True
+CELERY_TIMEZONE = TIME_ZONE
  
 
 #reids caches set up

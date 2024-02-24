@@ -14,7 +14,6 @@ from rest_framework.pagination import PageNumberPagination
 class ListPosts(ListCreateAPIView):
     serializer_class = PostSerializerUser
     queryset = Posts.objects.all()
-    pagination_class = PostListPagination
 
 
 
