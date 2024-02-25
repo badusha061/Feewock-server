@@ -10,7 +10,8 @@ from rest_framework.views import APIView
 from .pagination import PostListPagination
 from rest_framework.pagination import PageNumberPagination
 
-# @permission_classes([AllowAny])
+
+
 class ListPosts(ListCreateAPIView):
     serializer_class = PostSerializerUser
     queryset = Posts.objects.all()
