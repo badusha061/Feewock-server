@@ -1,7 +1,7 @@
 amqp==5.2.0
 asgiref==3.7.2
 attrs==23.2.0
-autobahn==23.6.2
+# autobahn==23.6.2
 Automat==22.10.0
 billiard==4.2.0
 celery==5.3.6
@@ -20,7 +20,9 @@ cryptography==42.0.0
 daphne==4.0.0
 defusedxml==0.8.0rc2
 dj-rest-auth==5.0.2
-Django==5.0.1
+# Django==5.0.1
+Django>=3.2,<4.1
+
 django-allauth==0.60.1
 django-cors-headers==4.3.1
 django-environ==0.11.2
@@ -36,8 +38,9 @@ msgpack==1.0.7
 oauthlib==3.2.2
 pillow==10.2.0
 prompt-toolkit==3.0.43
-psycopg2==2.9.9
+# psycopg2==2.9.9
 psycopg2-binary==2.9.9
+# psycopg2-binary==2.9.5
 pyasn1==0.5.1
 pyasn1-modules==0.3.0
 pycparser==2.21
@@ -55,13 +58,24 @@ service-identity==24.1.0
 six==1.16.0
 social-auth-app-django==5.4.0
 social-auth-core==4.5.1
-sqlparse==0.4.4
+# sqlparse==0.4.4
+sqlparse==0.4.3
 Twisted==23.10.0
-twisted-iocpsupport==1.0.4
+# twisted-iocpsupport==1.0.4    
 txaio==23.1.1
 typing_extensions==4.9.0
-tzdata==2023.4
+# tzdata==2023.4
+tzdata==2022.7
+
+
 urllib3==2.1.0
 vine==5.1.0
 wcwidth==0.2.13
 zope.interface==6.1
+django-celery-results==2.3.0
+django-celery-beat==2.3.0
+stripe==5.0.0
+
+gunicorn==21.2.0
+uvicorn==0.27.1
+whitenoise==6.6.0

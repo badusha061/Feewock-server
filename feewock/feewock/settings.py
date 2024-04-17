@@ -10,7 +10,7 @@ env = environ.Env()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-environ.Env.read_env(BASE_DIR/ '.env')
+environ.Env.read_env(str(BASE_DIR/ '.env'))
 
 SMS_API_KEY = env("SMS_API_KEY")
 
@@ -25,7 +25,7 @@ APPEND_SLASH = False
 SECRET_KEY = 'django-insecure-4ju_#bjp3=v^f^9@i%g^uwt2=new5&1@g+((^ab!644f^^mu2^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -42,10 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
 
 
+ 
     #apps
+
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
@@ -105,6 +106,7 @@ ROOT_URLCONF = 'feewock.urls'
 
 ASGI_APPLICATION = "chat.routing.application" 
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 
@@ -112,10 +114,12 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [('redis', 6379)],
         },
     },
 }
+
+
 
 
 TEMPLATES = [
@@ -196,27 +200,68 @@ SIMPLE_JWT = {
 }
 
 
-# WSGI_APPLICATION = 'feewock.wsgi.application'
 
 
 
+
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = [
+    "http://44.202.100.172",
+    "https://44.202.100.172",
+    "http://0.0.0.0",
+    "https://0.0.0.0",
+    "http://0.0.0.0:9090",
+    "https://urbansteps.site",
+    "https://urbansteps.site",
+
+]
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://3.89.252.173",
+    "https://3.89.252.173",
+    "http://0.0.0.0",
+    "https://0.0.0.0",
+    "http://0.0.0.0:9090"
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+from corsheaders.defaults import default_headers
+
+CORS_ALLOW_HEADERS = [
+    'access-control-allow-headers',
+    'access-control-allow-methods',
+    'access-control-allow-origin',
+    'content-type',
+    'x-csrftoken',
+    'authorization'
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 
 DATABASES = {
    "default": {
        "ENGINE": "django.db.backends.postgresql",
-       "NAME": "feewock1",
-       "USER": "postgres",
-       "PASSWORD": "123",
-       "HOST": "127.0.0.1",
+       "NAME": "feewock1_db",
+       "USER": "feewock1_user",
+       "PASSWORD": "feewock1_123",
+       "HOST": "postgres_db",
        "PORT": "5432",
    }
 }
 
 
 
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -234,8 +279,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/5.0/topics/i18n/
+
+
 
 LANGUAGE_CODE = 'en-us'
 
@@ -246,30 +291,31 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
+
+
+
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
 CORS_ORIGIN_ALLOW_ALL = True
-
-# CORS_ALLOW_CREDENTIALS = True 
-
 CORS_ORIGIN_WHITELIST = [
-    "http://localhost:5173",
-    "http://127.0.0.1:8001"
+    "https://feewock.vercel.app",
+    "https://api.feewock.online"
 ]
-
-
-
 CORS_ALLOWED_ORIGINS = [
-  "http://localhost:5173", 
+  "https://feewock.vercel.app", 
 ]
+
+
+
+
+
 
 DJOSER = {
     'LOGIN_FIELD': 'email',
@@ -292,10 +338,11 @@ DJOSER = {
         'user_delete': 'djoser.serializers.UserDeleteSerializer',
     }
 }
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-SITE_URL = "http://localhost:5173"
+SITE_URL = "https://feewock.vercel.app"
 
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST='smtp.gmail.com'
@@ -308,7 +355,8 @@ STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
 
 
 #celery basic set up 
-CELERY_BROKER_URL = 'redis://127.0.0.1:6379/'
+# CELERY_BROKER_URL = 'redis://127.0.0.1:6379/'
+CELERY_BROKER_URL = 'redis://feewock-redis-1:6379/'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TASK_SERIALIZER = 'json'
@@ -322,13 +370,3 @@ CELERY_TRACK_STARTED = True
 CELERY_TIMEZONE = TIME_ZONE
  
 
-#reids caches set up
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": f"redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
-    }
-}
