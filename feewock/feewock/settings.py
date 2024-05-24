@@ -305,11 +305,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = [
-    "https://feewock.vercel.app",
-    "https://api.feewock.online"
+    "https://feewock.online",
 ]
 CORS_ALLOWED_ORIGINS = [
-  "https://feewock.vercel.app", 
+  "https://feewock.online", 
 ]
 
 
@@ -342,7 +341,7 @@ DJOSER = {
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-SITE_URL = "https://feewock.vercel.app"
+SITE_URL = "https://feewock.online"
 
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST='smtp.gmail.com'
@@ -370,3 +369,13 @@ CELERY_TRACK_STARTED = True
 CELERY_TIMEZONE = TIME_ZONE
  
 
+
+AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = 'feewock'
+AWS_S3_SIGNATURE_NAME = 's3v4',
+AWS_S3_REGION_NAME = 'eu-north-1'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL =  None
+AWS_S3_VERITY = True
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
